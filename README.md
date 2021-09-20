@@ -1,7 +1,7 @@
 # potagenial
 Voici le repository de notre projet d'integration 3TI
 
-2021- 2022 Développement Informatique 3 (web)
+2021- 2022 Projet d'integration
 
  ![Image de l'ephec](https://i.imgur.com/k1pB47i.png?1)
 ## Présentation :  
