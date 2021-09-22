@@ -10,7 +10,7 @@ Nous sommes des eleves en 3TI de l'[Ephec](https://www.ephec.be/)
 * [MONTALTO Logan](https://github.com/logan-montalto)
 * [DELANNOIT Grégoire](https://github.com/thegregouze)
 * [DAXHELET Nicolas](https://github.com/nicodax)
-* [DEVASHISH Basnet](https://github.com/DEVASHISH7777)
+* [BASNET Devashish](https://github.com/DEVASHISH7777)
 * [AWOUNTSA Aurelle](https://github.com/aurelle-awountsa)
 * [KHAZOUM Noelle](https://github.com/noellekh)
 ## Description :
