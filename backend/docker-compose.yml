@@ -1,0 +1,13 @@
+# Docker version
+version: '2'
+services:
+  # Node.js Express RESTfull API
+  nodejs_environment:
+    container_name: api
+    build:
+      context: ./node.js
+      dockerfile: Dockerfile
+    hostname: daxhelet.ovh
+    restart: always
+    ports:
+      - "3000:3000"
