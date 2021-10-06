@@ -6,7 +6,7 @@ var WebSocketServer = require('ws')
 stream = new Stream({
   name: 'name',
   streamUrl: 'rtsp://root:ipcam@192.168.1.22/live.sdp',  //rtsp of the IPcamera
-  wsPort: 9999,
+  wsPort: 9990,
 
   // to convert video format
   
