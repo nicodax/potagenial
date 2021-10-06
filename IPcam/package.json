@@ -1,0 +1,19 @@
+{
+  "name": "ipcam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ffmpeg": "^0.0.4",
+    "node-onvif": "^0.1.7",
+    "node-rtsp-stream": "^0.0.9",
+    "node-rtsp-stream-jsmpeg": "^0.0.2",
+    "ws": "^7.5.5"
+  }
+}
