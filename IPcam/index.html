@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>cam</title>
+        <h1>Hello ip cam</h1>
+    </head>
+<body>
+    <canvas id="video-canvas"></canvas>
+</body>
+
+<script type="text/javascript" src="jsmpeg.js"></script>
+<script type="text/javascript">
+
+    var canvas = document.getElementById('video-canvas');
+    var url = new WebSocket('ws://localhost:9999');
+    var player = new  jsmpeg(url, {canvas:canvas, autoplay:true, audio:false, loop:true});
+</script>
+</html>
