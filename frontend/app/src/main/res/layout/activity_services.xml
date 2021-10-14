@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Services">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:layout_marginLeft="152dp"
+        android:layout_marginTop="104dp"
+        android:text="SERVICES"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:text="Lorem ipsum dolor sit amet. Et blanditiis voluptas est nihil pariatur est repellat iusto. Sed sunt quae ea assumenda excepturi et sunt pariatur. Eum veritatis culpa sed deserunt aspernatur qui nobis amet aut quia dolor ut esse veniam non velit dolorem.
+
+In voluptatum fugiat est ipsam blanditiis et mollitia architecto? Est dolorem dicta et sunt quae ut vero accusamus. Et corporis quos sed quia excepturi in tempore sunt qui recusandae eligendi eos alias optio.
+
+At totam fugit ea officiis illum eum unde quis rem perspiciatis unde a ducimus cum velit accusamus ad quaerat doloribus. Qui amet cumque aut error sunt aut vitae nulla et dolorum facere eos explicabo voluptate. Id dolorem consequuntur et debitis provident id libero dolorum! Eos perspiciatis dicta qui voluptate blanditiis 33 provident nihil et placeat rerum!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
