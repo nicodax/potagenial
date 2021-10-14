@@ -1,4 +1,4 @@
-package com.aurelle.potagenial;
+package com.example.potagenial;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.aurelle.potagenial", appContext.getPackageName());
+        assertEquals("com.example.potagenial", appContext.getPackageName());
     }
 }

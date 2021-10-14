@@ -1,4 +1,4 @@
-package com.aurelle.potagenial;
+package com.example.potagenial;
 
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;

@@ -3,16 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_aide.xml" value="0.25" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_camera.xml" value="0.33" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_main2.xml" value="0.22" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_panier.xml" value="0.33" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_parametres.xml" value="0.33" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_profil.xml" value="0.25" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/activity_services.xml" value="0.33" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/aide_layout.xml" value="0.1" />
-        <entry key="..\:/Users/aurelle awountsa/AndroidStudioProjects/Potagenial/app/src/main/res/layout/profil.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/layout/activity_aide.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.254981884057971" />
+        <entry key="app/src/main/res/layout/activity_panier.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/activity_parametres.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/activity_profil.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/activity_services.xml" value="0.18125" />
       </map>
     </option>
   </component>

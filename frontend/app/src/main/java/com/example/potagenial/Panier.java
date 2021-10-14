@@ -1,15 +1,15 @@
-package com.aurelle.potagenial;
+package com.example.potagenial;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Camera extends AppCompatActivity {
+public class Panier extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_panier);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

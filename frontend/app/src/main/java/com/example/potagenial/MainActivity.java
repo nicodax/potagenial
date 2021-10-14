@@ -1,4 +1,4 @@
-package com.aurelle.potagenial;
+package com.example.potagenial;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-// ajouter l'action qui dirige vers la page d'aide quand on appui l'image
+        // ajouter l'action qui dirige vers la page d'aide quand on appui l'image
 
         this.aide = (ImageView) findViewById(R.id.aide);
         aide.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-// ajouter l'action qui dirige vers la page du profilde l'utilisateur quand on appuis l'image
+        // ajouter l'action qui dirige vers la page du profilde l'utilisateur quand on appuis l'image
 
         this.profil = (ImageView)findViewById(R.id.profil);
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-// ajouter l'action qui dirige vers la page des parametres de l'application quand on appuis l'image
+        // ajouter l'action qui dirige vers la page des parametres de l'application quand on appuis l'image
 
         this.parametre = (ImageView)findViewById(R.id.parametre);
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-// ajouter l'action qui dirige vers la page du profilde l'utilisateur quand on appuis l'image
+        // ajouter l'action qui dirige vers la page du profilde l'utilisateur quand on appuis l'image
 
         this.services = (ImageView)findViewById(R.id.services);
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-// ajouter l'action qui dirige vers le panier quand on appuis l'image
+        // ajouter l'action qui dirige vers le panier quand on appuis l'image
 
         this.panier = (ImageView)findViewById(R.id.panier);
 
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-// ajouter l'action qui dirige vers la camera quand on appuis l'image
+        // ajouter l'action qui dirige vers la camera quand on appuis l'image
 
         this.camera = (ImageView)findViewById(R.id.camera);
 
@@ -103,27 +104,28 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-// mettre le bouton de retour de la camera vers le dashboard
+
+        // mettre le bouton de retour de la camera vers le dashboard
         camera.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, Camera.class)));
 
-// mettre le bouton de retour  du profil vers le dashboard
+        // mettre le bouton de retour  du profil vers le dashboard
         profil.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, Profil.class)));
 
-// mettre le bouton de retour de l'aide  vers le dashboard
+        // mettre le bouton de retour de l'aide  vers le dashboard
         aide.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, Aide.class)));
 
-// mettre le bouton de retour des paramètres  vers le dashboard
+        // mettre le bouton de retour des paramètres  vers le dashboard
         parametre.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, Parametres.class)));
 
-// mettre le bouton de retour du panier  vers le dashboard
+        // mettre le bouton de retour du panier  vers le dashboard
         panier.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, Panier.class)));
 
-// mettre le bouton de retour des services  vers le dashboard
+        // mettre le bouton de retour des services  vers le dashboard
         services.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, Services.class)));
     }

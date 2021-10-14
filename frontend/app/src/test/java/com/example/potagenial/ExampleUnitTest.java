@@ -1,4 +1,4 @@
-package com.aurelle.potagenial;
+package com.example.potagenial;
 
 import org.junit.Test;
 

@@ -1,15 +1,15 @@
-package com.aurelle.potagenial;
+package com.example.potagenial;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Parametres extends AppCompatActivity {
+public class Camera extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parametres);
+        setContentView(R.layout.activity_camera);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
