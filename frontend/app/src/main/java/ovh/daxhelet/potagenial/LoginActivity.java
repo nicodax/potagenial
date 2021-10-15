@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = "http://daxhelet.ovh:3535/user/login";
 
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+
         JSONObject params = new JSONObject();
         try {
             params.put("username", username);
@@ -61,6 +63,12 @@ public class LoginActivity extends AppCompatActivity {
                         .equals(username)) {
                     Toast.makeText(LoginActivity.this, "Login successful!",
                             Toast.LENGTH_SHORT).show();
+
+                    User user = new User(username, password, response.getJSONObject(0)
+                            .getString("user_email"));
+                    userLocalStore.storeUserData(user);
+                    userLocalStore.setUserLoggedIn(true);
+
                     Intent intent = new Intent(LoginActivity.this,
                             MainActivity.class);
                     startActivity(intent);

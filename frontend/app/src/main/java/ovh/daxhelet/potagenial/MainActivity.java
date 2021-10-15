@@ -3,15 +3,20 @@ package ovh.daxhelet.potagenial;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView eDashboard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        eDashboard = findViewById(R.id.tvDashboardText);
 
         // ajouter l'action qui dirige vers la page d'aide quand on appui l'image
 
@@ -110,6 +115,28 @@ public class MainActivity extends AppCompatActivity {
         // TEMPORAIRE
         // mettre le bouton de retour de la camera vers le dashboard
         logo.setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+                logOut());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!authenticate()) {
+            Intent login = new Intent(MainActivity.this,
+                    LoginActivity.class);
+            startActivity(login);
+        }
+    }
+
+    private boolean authenticate() {
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        return userLocalStore.getUserLoggedIn();
+    }
+
+    private void logOut() {
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        userLocalStore.clearUserData();
+        userLocalStore.setUserLoggedIn(false);
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 }
