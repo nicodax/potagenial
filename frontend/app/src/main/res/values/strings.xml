@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">potagenial</string>
+    <string name="potagenial_logo_description">potagenial - logo</string>
+    <string name="profile_activity_logo">profile activity button</string>
+    <string name="services_activity_logo">services activity button</string>
+    <string name="parametres_activity_logo">parametres activity button</string>
+    <string name="panier_activity_logo">panier activity button</string>
+    <string name="aide_activity_logo">aide activity button</string>
+    <string name="camera_activity_logo">camera activity button</string>
+    <string name="profil">Profil</string>
+    <string name="services">Services</string>
+    <string name="dashboard">DASHBOARD</string>
+    <string name="param_tres">Paramètres</string>
+    <string name="panier">Panier</string>
+    <string name="aide">Aide</string>
+    <string name="camera">Camera</string>
+    <string name="camera_activity_text">CAMERA</string>
+    <string name="aide_activity_text">AIDE</string>
+    <string name="panier_activity_text">PANIER</string>
+    <string name="parametres_activity_text">PARAMETRES</string>
+    <string name="profil_activity_text">PROFIL</string>
+    <string name="services_activity_text">SERVICES</string>
+    <string name="login_btn_text">Login</string>
+    <string name="enter_password_prompt">Enter password</string>
+    <string name="enter_username_prompt">Enter username</string>
 </resources>

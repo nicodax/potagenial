@@ -1,15 +1,14 @@
-package com.example.potagenial;
+package ovh.daxhelet.potagenial;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Services extends AppCompatActivity {
+public class PanierActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_services);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_panier);
     }
 }

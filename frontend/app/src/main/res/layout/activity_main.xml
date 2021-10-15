@@ -5,154 +5,168 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    // ajouter les images
-
-    // ajouter les titres des images
 
     <ImageView
-        android:id="@+id/aide"
-        android:layout_width="110dp"
-        android:layout_height="108dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="452dp"
-        android:src="@drawable/aide1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
+        android:id="@+id/ivLogo"
         android:layout_width="106dp"
-        android:layout_height="104dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginLeft="148dp"
-        android:layout_marginTop="56dp"
-        android:src="@drawable/logo"
+        android:layout_height="106dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/potagenial_logo_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
+        app:srcCompat="@drawable/logo" />
 
     <ImageView
-        android:id="@+id/camera"
-        android:layout_width="96dp"
-        android:layout_height="97dp"
-        android:layout_marginStart="284dp"
-        android:layout_marginLeft="284dp"
-        android:layout_marginTop="452dp"
-        android:src="@drawable/camera"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/panier"
-        android:layout_width="103dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="264dp"
-        android:layout_marginLeft="264dp"
-        android:layout_marginTop="312dp"
-        android:src="@drawable/panier"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/services"
-        android:layout_width="95dp"
+        android:id="@+id/ivProfil"
+        android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="272dp"
-        android:layout_marginLeft="272dp"
-        android:layout_marginTop="184dp"
-        android:src="@drawable/services1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/parametre"
-        android:layout_width="114dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="312dp"
-        android:src="@drawable/parametre1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/profil"
-        android:layout_width="106dp"
-        android:layout_height="97dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="180dp"
-        android:src="@drawable/profil"
+        android:contentDescription="@string/profile_activity_logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profil" />
+
+    <ImageView
+        android:id="@+id/ivServices"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="55dp"
+        android:contentDescription="@string/services_activity_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/ivProfil"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/services" />
+
+    <ImageView
+        android:id="@+id/ivParametres"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="45dp"
+        android:contentDescription="@string/parametres_activity_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfil"
+        app:srcCompat="@drawable/parametre1" />
+
+    <ImageView
+        android:id="@+id/ivPanier"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="55dp"
+        android:contentDescription="@string/panier_activity_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/ivParametres"
+        app:layout_constraintTop_toBottomOf="@+id/ivServices"
+        app:srcCompat="@drawable/panier" />
+
+    <ImageView
+        android:id="@+id/ivAide"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="45dp"
+        android:contentDescription="@string/aide_activity_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivParametres"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/aide1" />
+
+    <ImageView
+        android:id="@+id/ivCamera"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="55dp"
+        android:contentDescription="@string/camera_activity_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/ivAide"
+        app:layout_constraintTop_toBottomOf="@+id/ivPanier"
+        app:layout_constraintVertical_bias="0.005"
+        app:srcCompat="@drawable/camera" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="93dp"
-        android:layout_height="21dp"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:text="DASHBOARD"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
+        android:id="@+id/tvProfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="284dp"
-        android:text="Profil"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/profil"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ivProfil" />
 
     <TextView
+        android:id="@+id/tvServices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="424dp"
-        android:text="Paramètress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="100dp"
+        android:text="@string/services"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivServices" />
 
     <TextView
-        android:layout_width="34dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginTop="572dp"
-        android:text="Aide"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
+        android:id="@+id/tvDashboardText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="304dp"
-        android:layout_marginLeft="304dp"
-        android:layout_marginTop="572dp"
-        android:text="Camera"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/dashboard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
+        android:id="@+id/tvParametres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="304dp"
-        android:layout_marginLeft="304dp"
-        android:layout_marginTop="424dp"
-        android:text="Panier"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/param_tres"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ivParametres" />
 
     <TextView
+        android:id="@+id/tvPanier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="284dp"
-        android:layout_marginLeft="284dp"
-        android:layout_marginTop="284dp"
-        android:text="Services"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="112dp"
+        android:text="@string/panier"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPanier" />
+
+    <TextView
+        android:id="@+id/tvAide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/aide"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ivAide" />
+
+    <TextView
+        android:id="@+id/tvCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="104dp"
+        android:text="@string/camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCamera" />
 </androidx.constraintlayout.widget.ConstraintLayout>

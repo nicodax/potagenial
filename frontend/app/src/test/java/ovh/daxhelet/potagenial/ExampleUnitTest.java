@@ -1,4 +1,4 @@
-package com.example.potagenial;
+package ovh.daxhelet.potagenial;
 
 import org.junit.Test;
 

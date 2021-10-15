@@ -3,13 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_aide.xml" value="0.18125" />
-        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.18125" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.254981884057971" />
-        <entry key="app/src/main/res/layout/activity_panier.xml" value="0.18125" />
-        <entry key="app/src/main/res/layout/activity_parametres.xml" value="0.18125" />
-        <entry key="app/src/main/res/layout/activity_profil.xml" value="0.18125" />
-        <entry key="app/src/main/res/layout/activity_services.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/activity_aide.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.19947916666666668" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_panier.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_parametres.xml" value="0.19947916666666668" />
+        <entry key="app/src/main/res/layout/activity_profil.xml" value="0.19947916666666668" />
+        <entry key="app/src/main/res/layout/activity_services.xml" value="0.19947916666666668" />
       </map>
     </option>
   </component>
