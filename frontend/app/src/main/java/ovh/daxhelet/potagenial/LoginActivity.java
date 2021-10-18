@@ -64,8 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Login successful!",
                             Toast.LENGTH_SHORT).show();
 
-                    User user = new User(username, password, response.getJSONObject(0)
-                            .getString("user_email"));
+                    User user = new User(username, password, response.getJSONObject(0).getString("user_email"));
                     userLocalStore.storeUserData(user);
                     userLocalStore.setUserLoggedIn(true);
 
