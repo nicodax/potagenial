@@ -20,7 +20,14 @@
     <string name="parametres_activity_text">PARAMETRES</string>
     <string name="profil_activity_text">PROFIL</string>
     <string name="services_activity_text">SERVICES</string>
-    <string name="login_btn_text">Login</string>
+    <string name="login_btn_text">Log in</string>
     <string name="enter_password_prompt">Enter password</string>
     <string name="enter_username_prompt">Enter username</string>
+    <string name="enter_email_prompt">Enter email</string>
+    <string name="confirm_password_prompt">Confirm password</string>
+    <string name="signup_button_text">Sign up</string>
+    <string name="enter_firstname_prompt">Enter firstname</string>
+    <string name="enter_lastname_prompt">Enter lastname</string>
+    <string name="to_login_button">Already signed up ?</string>
+    <string name="to_signup_button">No account yet ?</string>
 </resources>

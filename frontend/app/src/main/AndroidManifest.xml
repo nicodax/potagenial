@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Potagenial"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SignupActivity"
+            android:exported="true" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true" />
         <activity

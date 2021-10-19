@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         eUsername = findViewById(R.id.etUsername);
         ePassword = findViewById(R.id.etPassword);
         Button eLogin = findViewById(R.id.btnLogin);
+        Button eToSignup = findViewById(R.id.btnToSignup);
 
         eLogin.setOnClickListener(v -> {
             String inputUsername = eUsername.getText().toString();
@@ -39,6 +40,12 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 volleyLogin(inputUsername, inputPassword);
             }
+        });
+
+        eToSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,
+                    SignupActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -64,7 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Login successful!",
                             Toast.LENGTH_SHORT).show();
 
-                    User user = new User(username, password, response.getJSONObject(0).getString("user_email"));
+                    User user = new User(username, password, response.getJSONObject(0)
+                            .getString("user_email"));
                     userLocalStore.storeUserData(user);
                     userLocalStore.setUserLoggedIn(true);
 
