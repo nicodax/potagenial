@@ -7,7 +7,7 @@
     tools:context=".AideActivity">
 
     <EditText
-        android:id="@+id/txtEmail"
+        android:id="@+id/email"
         android:layout_width="282dp"
         android:layout_height="74dp"
         android:layout_marginTop="120dp"
@@ -21,7 +21,21 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <EditText
-        android:id="@+id/txtMessage"
+        android:id="@+id/subject"
+        android:layout_width="282dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Votre sujet"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/message"
         android:layout_width="279dp"
         android:layout_height="208dp"
         android:layout_marginTop="52dp"
@@ -32,11 +46,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/subject"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/btnSend"
+        android:id="@+id/bouton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
@@ -44,5 +58,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/message" />
 </androidx.constraintlayout.widget.ConstraintLayout>

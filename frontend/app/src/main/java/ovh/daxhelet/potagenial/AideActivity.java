@@ -1,15 +1,24 @@
 package ovh.daxhelet.potagenial;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -17,12 +26,11 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
-import java.lang.String;
 
 public class AideActivity extends AppCompatActivity {
-    EditText _txtEmail, _txtMessage;
-    Button _bntSend;
+    EditText email, imessage, subject;
+    Button bouton;
+    String username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,45 +39,101 @@ public class AideActivity extends AppCompatActivity {
 
         Log.d("test", "la page aide est ok!");
 
-        _txtEmail = findViewById(R.id.txtEmail);
-        _txtMessage = findViewById(R.id.txtMessage);
-        _bntSend = findViewById(R.id.btnSend);
-        _bntSend.setOnClickListener(new View.OnClickListener() {
+        email = findViewById(R.id.email);
+        imessage = findViewById(R.id.message);
+        subject = findViewById(R.id.subject);
+        bouton = findViewById(R.id.bouton);
+        username = "potagenial@gmail.com";
+        password = "pot4geni4l**";
+
+        Log.d("connection", "connection ok !");
+
+        bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String username = "potagenial@gmail.com";
-                final String password = "pot4geni4l**";
-                String messageToSend = _txtMessage.getText().toString();
                 Properties props = new Properties();
                 props.put("mail.smtp.auth", "true");
                 props.put("mail.smtp.starttls.enable", "true");
                 props.put("mail.smtp.host", "smtp.gmail.com");
                 props.put("mail.smtp.port", "587");
-                Session session=Session.getInstance(props,
-                        new javax.mail.Authenticator(){
-                            @Override
-                            protected PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication(username, password);
-                            }
-                        });
+
+                // initialiser la session
+
+                Session session = Session.getInstance(props, new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
 
                 try {
                     Message message = new MimeMessage(session);
                     message.setFrom(new InternetAddress(username));
-                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(_txtEmail.getText().toString()));
-                    message.setSubject("Email envoyé ! ");
-                    message.setText(messageToSend);
-                    Transport.send(message);
-                    Toast.makeText(getApplicationContext(),"Email envoyé avec succés !", Toast.LENGTH_LONG).show();
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getText().toString().trim()));
+                    message.setSubject(subject.getText().toString().trim());
+                    message.setText(imessage.getText().toString().trim());
 
-                }catch (MessagingException e){
-                    throw new RuntimeException(e);
+                    new SendEmail().execute(message);
+
+
+                } catch (MessagingException e) {
+                    e.printStackTrace();
                 }
-
 
             }
         });
-        StrictMode.ThreadPolicy policy = new  StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+    }
+// Pour envoyer l'emial
+    private class SendEmail  extends AsyncTask<Message, String, String> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(AideActivity.this, "Veuillez patienter", "Envoie de l'email", true, false);
+        }
+
+        @Override
+        protected String doInBackground(Message... messages) {
+            try {
+                Transport.send(messages[0]);
+                return "Success !";
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                return "Error !";
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            progressDialog.dismiss();
+            if (s.equals("Success !")){
+                AlertDialog.Builder builder = new AlertDialog.Builder(AideActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle(Html.fromHtml("<font>Success</font>"));
+                builder.setMessage("Email envoyé avec succès !");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        email.setText("");
+                        imessage.setText("");
+                        subject.setText("");
+
+                    }
+                });
+
+                builder.show();
+
+            }else{
+                Toast.makeText(getApplicationContext(), "une erreur s'est produite", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 }
