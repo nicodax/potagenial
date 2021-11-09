@@ -51,6 +51,8 @@ public class AideActivity extends AppCompatActivity {
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //initialiser les properties pour le compte gmail
                 Properties props = new Properties();
                 props.put("mail.smtp.auth", "true");
                 props.put("mail.smtp.starttls.enable", "true");
@@ -68,6 +70,9 @@ public class AideActivity extends AppCompatActivity {
 
 
                 try {
+
+                    // pour le style de message du mail
+
                     Message message = new MimeMessage(session);
                     message.setFrom(new InternetAddress(username));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getText().toString().trim()));
@@ -84,19 +89,21 @@ public class AideActivity extends AppCompatActivity {
             }
         });
     }
-// Pour envoyer l'emial
-    private class SendEmail  extends AsyncTask<Message, String, String> {
+    
+// Pour envoyer l'email
+
+    private class SendEmail  extends AsyncTask<Message, String, String> { //class pour effectuer des tâches sans manipuler des threads
 
         private ProgressDialog progressDialog;
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute() { //avant que la tâche ne soit exécutée
             super.onPreExecute();
             progressDialog = ProgressDialog.show(AideActivity.this, "Veuillez patienter", "Envoie de l'email", true, false);
         }
 
         @Override
-        protected String doInBackground(Message... messages) {
+        protected String doInBackground(Message... messages) { //les paramètre de la classe sont passées ici pour fonctionner en fond
             try {
                 Transport.send(messages[0]);
                 return "Success !";
@@ -108,7 +115,7 @@ public class AideActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String s) { //fin du calcul. C'est ici que sont transmis les résultats
             super.onPostExecute(s);
 
             progressDialog.dismiss();
