@@ -106,7 +106,7 @@ public class AideActivity extends AppCompatActivity {
         protected String doInBackground(Message... messages) { //les paramètre de la classe sont passées ici pour fonctionner en fond
             try {
                 Transport.send(messages[0]);
-                return "Success !";
+                return "Success !"; // plutot mettre une variable 
             } catch (MessagingException e) {
                 e.printStackTrace();
                 return "Error !";
