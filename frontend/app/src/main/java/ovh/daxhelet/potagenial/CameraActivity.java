@@ -15,7 +15,7 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 
 public class CameraActivity extends AppCompatActivity
 {
-    private static final String rtspUrl = "http://root:ipcam@ipcam00.ddns.net:7783";
+    private static final String rtspUrl = "rtsp://root:ipcam@109.131.244.183:554/live.sdp";
 
     private LibVLC libVlc;
     private MediaPlayer mediaPlayer;
