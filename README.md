@@ -13,7 +13,3 @@ Nous sommes des eleves en 3TI de l'[Ephec](https://www.ephec.be/)
 * [KHAZOUM Noelle](https://github.com/noellekh)
 ## Description :
 Application de gestion et achat de parcelle de potager
-
-## Git Workflow :
-
-[Git Flow (cheatsheet)](https://danielkummer.github.io/git-flow-cheatsheet/)
