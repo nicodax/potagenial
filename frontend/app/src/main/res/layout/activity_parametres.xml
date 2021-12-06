@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="178dp">
 
@@ -113,9 +113,9 @@
             android:layout_marginEnd="20dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNombreHeures" />
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
         <TextView
             android:id="@+id/tvArrosageText"
@@ -215,7 +215,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
-            android:text="00001"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/tvCameraId"
@@ -239,7 +238,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="00002"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -248,10 +246,10 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cbArrosageAutomatique"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Arrosage automatique"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -265,7 +263,7 @@
             android:layout_marginTop="15dp"
             android:text="Toutes les"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/cbArrosageAutomatique" />
 
         <EditText
             android:id="@+id/etNombreHeures"
@@ -274,10 +272,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:ems="10"
-            android:hint="6 (défaut)"
             android:inputType="number"
             app:layout_constraintStart_toEndOf="@+id/tvFrequenceArrosage"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/cbArrosageAutomatique" />
 
         <TextView
             android:id="@+id/tvFrequenceArrosageHeures"
@@ -289,18 +286,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/etNombreHeures"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/cbArrosageAutomatique" />
 
         <Button
             android:id="@+id/btCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
             android:text="Caméra"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.528"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vSeparator2"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/tvSondeId" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Mettre à jour"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etNombreHeures" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
