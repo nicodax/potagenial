@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -40,6 +41,12 @@ public class ParametresActivity extends AppCompatActivity {
             Intent cameraIntent = new Intent(getApplicationContext(),CameraActivity.class);
             startActivity(cameraIntent);
             finish();
+        });
+
+        Button update = (Button) findViewById(R.id.btUpdate);
+
+        update.setOnClickListener(view -> {
+            volleyUpdateSettings();
         });
     }
 
@@ -90,9 +97,52 @@ public class ParametresActivity extends AppCompatActivity {
                 Toast.makeText(ParametresActivity.this, "Incorrect credentials " +
                         "entered!", Toast.LENGTH_SHORT).show();
             }
-        }, error -> Toast.makeText(ParametresActivity.this, "An unexpected error occurred",
-                Toast.LENGTH_SHORT).show());
+        }, error -> Toast.makeText(ParametresActivity.this, "An unexpected error " +
+                        "occurred", Toast.LENGTH_SHORT).show());
 
         requestQueue.add(jsonArrayRequest);
+    }
+
+    public void volleyUpdateSettings(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+        String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
+
+        CheckBox automaticSprinkling = (CheckBox) findViewById(R.id.cbArrosageAutomatique);
+        Number automaticSprinklingValue;
+        if (automaticSprinkling.isChecked()) {
+            automaticSprinklingValue = 1;
+        } else {
+            automaticSprinklingValue = 0;
+        }
+
+        TextView frequenceArrosageAuto = (TextView) findViewById(R.id.etNombreHeures);
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("automatic_sprinkling", automaticSprinklingValue);
+            params.put("automatic_sprinkling_frequency",
+                    Integer.parseInt(frequenceArrosageAuto.getText().toString()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(ParametresActivity.this, "Update successful!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ParametresActivity.this,
+                        "An unexpected error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
     }
 }
