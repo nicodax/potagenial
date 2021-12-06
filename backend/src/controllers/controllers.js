@@ -131,6 +131,22 @@ const getUserSettings = (req, res) => {
     }
 };
 
+const postUserSettings = (req, res) => {
+    const errors = validationResult(req);
+    if (errors.array().length > 0) {
+        console.log(req.body.automatic_sprinkling);
+        res.send(errors.array());
+    } else {
+        const sqlQuery = `UPDATE settings SET settings_automatic_sprinkling = '${req.body.automatic_sprinkling}', settings_automatic_sprinkling_frequency = '${req.body.automatic_sprinkling_frequency}' WHERE user_username = '${req.params.username}'`
+
+        database.query(sqlQuery, (err, result) => {
+            if (err) res.status(400);
+            
+            res.json(result);
+        });
+    }
+};
+
 module.exports = {
     getUser,
     signUserIn,
@@ -139,5 +155,6 @@ module.exports = {
     amendName,
     amendEmail,
     amendAddress,
-    getUserSettings
+    getUserSettings,
+    postUserSettings
 }
