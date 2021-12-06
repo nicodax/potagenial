@@ -66,8 +66,10 @@ router.put('/user/address',
     controller.amendAddress
 );
   
-// [GET] eshop
-// router.get('/shop')
-// en attente de l'itération suivante
+// [GET] settings
+router.get('/user/settings/:username',
+    param('username').not().isEmpty().escape(),
+    controller.getUserSettings
+);
 
 module.exports = router;
