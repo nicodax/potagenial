@@ -111,6 +111,42 @@ const amendAddress = (req, res) => {
     }
 };
 
+const getUserSettings = (req, res) => {
+    const errors = validationResult(req);
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const sqlQuery = `SELECT * FROM settings WHERE user_username = '${req.params.username}'`;
+
+        try {
+            database.query(sqlQuery, (err, result) => {
+                if (err) res.status(520);
+                
+                res.json(result);
+            });
+        }
+        catch(err) {
+            res.status(520);
+        }
+    }
+};
+
+const postUserSettings = (req, res) => {
+    const errors = validationResult(req);
+    if (errors.array().length > 0) {
+        console.log(req.body.automatic_sprinkling);
+        res.send(errors.array());
+    } else {
+        const sqlQuery = `UPDATE settings SET settings_automatic_sprinkling = '${req.body.automatic_sprinkling}', settings_automatic_sprinkling_frequency = '${req.body.automatic_sprinkling_frequency}' WHERE user_username = '${req.params.username}'`
+
+        database.query(sqlQuery, (err, result) => {
+            if (err) res.status(400);
+            
+            res.json(result);
+        });
+    }
+};
+
 module.exports = {
     getUser,
     signUserIn,
@@ -118,5 +154,7 @@ module.exports = {
     amendPwd,
     amendName,
     amendEmail,
-    amendAddress
+    amendAddress,
+    getUserSettings,
+    postUserSettings
 }

@@ -2,6 +2,7 @@ package ovh.daxhelet.potagenial;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class UserLocalStore {
 
@@ -21,7 +22,7 @@ public class UserLocalStore {
     }
 
     public User getLoggedInUser() {
-        String username = userLocalDatabase.getString("name", "");
+        String username = userLocalDatabase.getString("username", "");
         String password = userLocalDatabase.getString("password", "");
         String email = userLocalDatabase.getString("email", "");
 

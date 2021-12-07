@@ -18,9 +18,6 @@ public class User {
     }
 
     public boolean isConnected() {
-        if(!this.username.isEmpty() && !this.password.isEmpty() && !this.email.isEmpty()) {
-            return true;
-        }
-        return false;
+        return !this.username.isEmpty() && !this.password.isEmpty() && !this.email.isEmpty();
     }
 }

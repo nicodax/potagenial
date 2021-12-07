@@ -20,6 +20,17 @@ CREATE TABLE users (
 );
 ```
 
+### Table products
+
+```sql
+CREATE TABLE products (
+    product_name varchar(45) NOT NULL PRIMARY KEY,
+    product_price integer NOT NULL,
+    product_description varchar(255) NOT NULL,
+    product_stock integer NOT NULL
+);
+```
+
 ### Table orders
 
 ```sql
@@ -34,32 +45,15 @@ CREATE TABLE orders (
 );
 ```
 
-### Table products
+### Table sondes
 
 ```sql
-CREATE TABLE products (
-    product_name varchar(45) NOT NULL PRIMARY KEY,
-    product_price integer NOT NULL,
-    product_description varchar(255) NOT NULL,
-    product_stock integer NOT NULL
+CREATE TABLE sondes (
+    sonde_id integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    sonde_status varchar(45) NOT NULL,
+    sonde_extra_info varchar(45) NOT NULL
 );
 ```
-
-### Table settings
-
-```sql
-CREATE TABLE settings (
-    user_username varchar(45) NOT NULL REFERENCES users,
-    camera_id integer NOT NULL REFERENCES cameras,
-    settings_temperature_outside decimal,
-    settings_temperature_ground decimal,
-    settings_humidity decimal,
-    CONSTRAINT pk_settings PRIMARY KEY (user_username, camera_id),
-    CONSTRAINT fk_settings_users FOREIGN KEY (user_username) REFERENCES users (user_username),
-    CONSTRAINT fk_settings_cameras FOREIGN KEY (camera_id) REFERENCES cameras (camera_id)
-);
-```
-
 ### Table cameras
 
 ```sql
@@ -70,14 +64,36 @@ CREATE TABLE cameras (
 );
 ```
 
+### Table settings
+
+```sql
+CREATE TABLE settings (
+    user_username varchar(45) NOT NULL REFERENCES users,
+    camera_id integer NOT NULL REFERENCES cameras,
+    sonde_id integer NOT NULL REFERENCES sondes,
+    settings_temperature_outside decimal,
+    settings_temperature_ground decimal,
+    settings_humidity decimal,
+    settings_last_sprinkling date,
+    settings_last_sprinkling_quantity decimal,
+    settings_automatic_sprinkling boolean NOT NULL DEFAULT false,
+    settings_automatic_sprinkling_frequency decimal NOT NULL DEFAULT 6,
+    CONSTRAINT pk_settings PRIMARY KEY (user_username, camera_id),
+    CONSTRAINT fk_settings_users FOREIGN KEY (user_username) REFERENCES users (user_username),
+    CONSTRAINT fk_settings_cameras FOREIGN KEY (camera_id) REFERENCES cameras (camera_id),
+    CONSTRAINT fk_settings_sondes FOREIGN KEY (sonde_id) REFERENCES sondes (sonde_id)
+);
+```
+
 # Insertion d'un utilisateur placeholder et de son matériel
 ```sql
 INSERT INTO users (user_username, user_password, user_money, user_firstname, user_lastname, user_email, user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES ('potagenial', 'p0t4g3ni4l', 250, 'potagenial', 'pwdgenial', 'potagenial@students.ephec.be', '2021-10-02', 'X', 'Belgique', 'Louvain-la-Neuve', 'Avenue du Ciseau', 15, 1348);
 INSERT INTO products (product_name, product_price, product_description, product_stock) VALUES ('graines de tournesol', 1, 'graines pour planter des tournesols', 25);
-INSERT INTO cameras (camera_status, camera_extra_info) VALUES ('RUNNING', 'IPv4=X.Y.X.Z');
+INSERT INTO cameras (camera_status, camera_extra_info) VALUES ('RUNNING', 'IPv4=X.Y.X.A');
+INSERT INTO sondes (sonde_status, sonde_extra_info) VALUES ('RUNNING', 'IPv4=X.Y.X.B');
 ```
 
 ```sql
 INSERT INTO orders (user_username, product_name, product_quantity) VALUES ('potagenial', 'graines de tournesol', 5);
-INSERT INTO settings (user_username, camera_id) VALUES ('potagenial', 1);
+INSERT INTO settings (user_username, camera_id, sonde_id) VALUES ('potagenial', 1, 1);
 ```

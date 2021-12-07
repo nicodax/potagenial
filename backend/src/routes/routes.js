@@ -66,8 +66,18 @@ router.put('/user/address',
     controller.amendAddress
 );
   
-// [GET] eshop
-// router.get('/shop')
-// en attente de l'itération suivante
+// [GET] settings from username
+router.get('/user/settings/:username',
+    param('username').not().isEmpty().escape(),
+    controller.getUserSettings
+);
+
+// [POST] amend settings from username
+router.post('/user/settings/:username',
+    param('username').not().isEmpty().escape(),
+    body('automatic_sprinkling').not().isEmpty().escape(),
+    body('automatic_sprinkling_frequency').not().isEmpty().escape(),
+    controller.postUserSettings
+);
 
 module.exports = router;
