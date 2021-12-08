@@ -154,10 +154,7 @@ const postSondeSettings = (req, res) => {
         const sqlQuery = `UPDATE settings SET settings_temperature_outside = '${req.body.settings_temperature_outside}', settings_temperature_ground = '${req.body.settings_temperature_ground}', settings_humidity = '${req.body.settings_humidity}', settings_last_sprinkling = (SELECT STR_TO_DATE('${req.body.settings_last_sprinkling}', '%d-%m-%Y')), settings_last_sprinkling_quantity = '${req.body.settings_last_sprinkling_quantity}' WHERE sonde_id = '${req.params.sonde_id}'`
 
         database.query(sqlQuery, (err, result) => {
-            if (err) {
-                console.log(err)
-                res.status(400);
-            }
+            if (err) res.status(400);
             
             res.json(result);
         });
