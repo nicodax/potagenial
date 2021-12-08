@@ -55,7 +55,6 @@ public class ParametresActivity extends AppCompatActivity {
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
         String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
-        Log.d("test", url.toString());
 
         CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
                 url, null, response -> {
