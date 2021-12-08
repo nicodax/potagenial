@@ -55,6 +55,7 @@ public class ParametresActivity extends AppCompatActivity {
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
         String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
+        Log.d("test", url.toString());
 
         CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
                 url, null, response -> {
@@ -94,6 +95,7 @@ public class ParametresActivity extends AppCompatActivity {
                     sondeId.setText(response.getJSONObject(0).getString("sonde_id"));
                 }
             } catch (JSONException e) {
+                Log.d("testdebug", e.toString());
                 Toast.makeText(ParametresActivity.this, "Incorrect credentials " +
                         "entered!", Toast.LENGTH_SHORT).show();
             }
