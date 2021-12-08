@@ -78,7 +78,7 @@ CREATE TABLE settings (
     settings_last_sprinkling_quantity decimal,
     settings_automatic_sprinkling boolean NOT NULL DEFAULT false,
     settings_automatic_sprinkling_frequency decimal NOT NULL DEFAULT 6,
-    CONSTRAINT pk_settings PRIMARY KEY (user_username, camera_id),
+    CONSTRAINT pk_settings PRIMARY KEY (user_username, camera_id, sonde_id),
     CONSTRAINT fk_settings_users FOREIGN KEY (user_username) REFERENCES users (user_username),
     CONSTRAINT fk_settings_cameras FOREIGN KEY (camera_id) REFERENCES cameras (camera_id),
     CONSTRAINT fk_settings_sondes FOREIGN KEY (sonde_id) REFERENCES sondes (sonde_id)

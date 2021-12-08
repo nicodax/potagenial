@@ -80,4 +80,15 @@ router.post('/user/settings/:username',
     controller.postUserSettings
 );
 
+// [POST] amend settings from arduino
+router.post('/sonde/settings/:sonde_id',
+    param('sonde_id').not().isEmpty().escape(),
+    body('settings_temperature_outside').not().isEmpty().escape(),
+    body('settings_temperature_ground').not().isEmpty().escape(),
+    body('settings_humidity').not().isEmpty().escape(),
+    body('settings_last_sprinkling').not().isEmpty().escape(),
+    body('settings_last_sprinkling_quantity').not().isEmpty().escape(),
+    controller.postSondeSettings
+);
+
 module.exports = router;
