@@ -161,6 +161,21 @@ const postSondeSettings = (req, res) => {
     }
 };
 
+const getEmailSupport = (req, res) => {
+    const sqlQuery = `SELECT * from emails`;
+
+        try {
+            database.query(sqlQuery, (err, result) => {
+                if (err) res.status(520);
+                
+                res.json(result);
+            });
+        }
+        catch(err) {
+            res.status(520);
+        }
+}
+
 module.exports = {
     getUser,
     signUserIn,
@@ -171,5 +186,7 @@ module.exports = {
     amendAddress,
     getUserSettings,
     postUserSettings,
-    postSondeSettings
+    postSondeSettings, 
+    getEmailSupport
 }
+

@@ -91,4 +91,9 @@ router.post('/sonde/settings/:sonde_id',
     controller.postSondeSettings
 );
 
+// [GET] emails for support
+router.get('/emails',
+    controller.getEmailSupport
+);
+
 module.exports = router;
