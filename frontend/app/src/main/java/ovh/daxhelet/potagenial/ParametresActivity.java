@@ -94,6 +94,7 @@ public class ParametresActivity extends AppCompatActivity {
                     sondeId.setText(response.getJSONObject(0).getString("sonde_id"));
                 }
             } catch (JSONException e) {
+                Log.d("testdebug", e.toString());
                 Toast.makeText(ParametresActivity.this, "Incorrect credentials " +
                         "entered!", Toast.LENGTH_SHORT).show();
             }
