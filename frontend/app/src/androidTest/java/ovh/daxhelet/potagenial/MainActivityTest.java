@@ -4,26 +4,13 @@ package ovh.daxhelet.potagenial;
 //import static androidx.test.espresso.action.ViewActions.click;
 //import static androidx.test.espresso.matcher.ViewMatchers.withId;
 //import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-//import android.app.Activity;
-//import android.app.Instrumentation;
-import android.app.Activity;
 import android.app.Instrumentation;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.After;
@@ -31,12 +18,16 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+//import android.app.Activity;
+//import android.app.Instrumentation;
+
 public class MainActivityTest {
 
     @Rule
     //Création d'une règle pour lancer notre activity
     public ActivityTestRule<MainActivity>mainActivityActivityTestRule=new ActivityTestRule<MainActivity>(MainActivity.class);
     private MainActivity mainActivity = null;
+
     public IntentsTestRule<MainActivity> intentsTestRule=new IntentsTestRule<>(MainActivity.class);
 
     Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(AideActivity.class.getName(), null, false);

@@ -1,14 +1,6 @@
 package ovh.daxhelet.potagenial;
 
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.junit.Assert.*;
-
-import android.app.Instrumentation;
-
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -31,6 +23,7 @@ public class AideActivityTest {
     @Test
 
     public void sendEmailTest(){
+
         Espresso.onView(ViewMatchers.withId(R.id.bouton)).perform(ViewActions.click());
     }
 

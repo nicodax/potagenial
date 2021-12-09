@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.UnsupportedEncodingException;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -28,9 +32,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class AideActivity extends AppCompatActivity {
-    EditText email, imessage, subject;
+    EditText  imessage, subject;
     Button bouton;
-    String username, password;
+    String username, password, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +43,15 @@ public class AideActivity extends AppCompatActivity {
 
         Log.d("test", "la page aide est ok!");
 
-        email = findViewById(R.id.email);
+        volleyGetEmail();
+
         imessage = findViewById(R.id.message);
         subject = findViewById(R.id.subject);
         bouton = findViewById(R.id.bouton);
-        username = "potagenial@gmail.com";
-        password = "pot4geni4l**";
 
         Log.d("connection", "connection ok !");
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
 
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,14 +74,16 @@ public class AideActivity extends AppCompatActivity {
                 });
 
 
+
                 try {
 
                     // pour le style de message du mail
 
                     Message message = new MimeMessage(session);
                     message.setFrom(new InternetAddress(username));
-                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getText().toString().trim()));
-                    message.setSubject(subject.getText().toString().trim());
+                    message.setRecipients(Message.RecipientType.TO,
+                            InternetAddress.parse(email));
+                    message.setSubject(user.username + " " + subject.getText().toString().trim());
                     message.setText(imessage.getText().toString().trim());
 
                     new SendEmail().execute(message);
@@ -128,7 +135,6 @@ public class AideActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        email.setText("");
                         imessage.setText("");
                         subject.setText("");
 
@@ -142,5 +148,31 @@ public class AideActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    public void volleyGetEmail(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+
+        String url = "http://daxhelet.ovh:3535/emails"  ;
+
+        CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
+                url, null, response -> {
+            try {
+                if(response.getJSONObject(0).getString("email_client")
+                        .equals("potagenial@gmail.com")) {
+                    username = response.getJSONObject(0).getString("email_client");
+                    password = response.getJSONObject(0).getString("password_client");
+                    email = response.getJSONObject(0).getString("email_user");
+                }
+            } catch (JSONException e) {
+                Log.d("testdebug", e.toString());
+                Toast.makeText(AideActivity.this, "An unexpected error" +
+                        " occured", Toast.LENGTH_SHORT).show();
+            }
+        }, error -> Toast.makeText(AideActivity.this, "An unexpected error " +
+                "occurred", Toast.LENGTH_SHORT).show());
+
+        requestQueue.add(jsonArrayRequest);
     }
 }
