@@ -1,6 +1,8 @@
 const { validationResult } = require('express-validator');
 const database = require('../db');
 
+const jwt = require('jsonwebtoken');
+
 const getUser = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) {
@@ -30,11 +32,27 @@ const logUserIn = (req, res) => {
 
         database.query(sqlQuery, (err, result) => {
             if (err) res.status(520);
+
+            const username = result[0].user_username;
+
+            const accessToken = signJwt(username);
             
-            res.json(result);
+            res.json({ 
+                user_username: username,
+                accessToken: accessToken
+            });
         });
     }
 };
+
+const signJwt = (username) => {
+    const user = {
+        name: username
+    }
+
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+    return accessToken;
+}
 
 const signUserIn = (req, res) => {
     const errors = validationResult(req);
@@ -45,8 +63,12 @@ const signUserIn = (req, res) => {
 
         database.query(sqlQuery, (err, result) => {
             if (err) res.status(400);
+
+            const username = req.body.username;
+            const accessToken = signJwt(username);
             
-            res.json(result);
+            if(result) res.json({accessToken: accessToken});
+            else res.json(result);
         });
     }
 };
