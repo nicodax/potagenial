@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,7 +25,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParametresActivity extends AppCompatActivity {
 
@@ -99,7 +102,15 @@ public class ParametresActivity extends AppCompatActivity {
                         "entered!", Toast.LENGTH_SHORT).show();
             }
         }, error -> Toast.makeText(ParametresActivity.this, "An unexpected error " +
-                        "occurred", Toast.LENGTH_SHORT).show());
+                        "occurred", Toast.LENGTH_SHORT).show())
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer test");
+                return headers;
+            }
+        };
 
         requestQueue.add(jsonArrayRequest);
     }

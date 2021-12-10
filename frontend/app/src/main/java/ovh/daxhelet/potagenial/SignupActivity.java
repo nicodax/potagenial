@@ -100,22 +100,28 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, url, params, response -> signup(response, username,
-                        password, email), error -> Toast.makeText(SignupActivity.this,
+                (Request.Method.POST, url, params, response -> {
+                    try {
+                        signup(response, username);
+                    } catch (JSONException e) {
+                        Toast.makeText(SignupActivity.this,
+                                "Cannot create user", Toast.LENGTH_SHORT).show();
+                    }
+                }, error -> Toast.makeText(SignupActivity.this,
                                 "Cannot create user", Toast.LENGTH_SHORT).show()
         );
 
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void signup(JSONObject response, String username, String password, String email) {
-        if(response.length() == 8) {
+    private void signup(JSONObject response, String username) throws JSONException {
+        if(response.length() == 1) {
             UserLocalStore userLocalStore = new UserLocalStore(this);
 
             Toast.makeText(SignupActivity.this, "Sign up successful!",
                     Toast.LENGTH_SHORT).show();
 
-            User user = new User(username, password, email);
+            User user = new User(username, response.getString("accessToken"));
             userLocalStore.storeUserData(user);
             userLocalStore.setUserLoggedIn(true);
 

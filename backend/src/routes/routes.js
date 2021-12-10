@@ -35,6 +35,7 @@ router.post('/user',
 
 // [PUT] amend user password
 router.put('/user/pwd',
+    controller.authenticateToken,
     body('username').not().isEmpty().escape(),
     body('password').not().isEmpty().escape(),
     controller.amendPwd
@@ -42,6 +43,7 @@ router.put('/user/pwd',
 
 // [PUT] amend user name
 router.put('/user/name',
+    controller.authenticateToken,
     body('username').not().isEmpty().escape(),
     body('firstname').not().isEmpty().escape(),
     body('lastname').not().isEmpty().escape(),
@@ -50,6 +52,7 @@ router.put('/user/name',
 
 // [PUT] amend user email
 router.put('/user/email',
+    controller.authenticateToken,
     body('username').not().isEmpty().escape(),
     body('email').isEmail().normalizeEmail(),
     controller.amendEmail
@@ -57,6 +60,7 @@ router.put('/user/email',
 
 // [PUT] amend user address
 router.put('/user/address',
+    controller.authenticateToken,
     body('username').not().isEmpty().escape(),
     body('country').not().isEmpty().escape(),
     body('city').not().isEmpty().escape(),
@@ -68,12 +72,14 @@ router.put('/user/address',
   
 // [GET] settings from username
 router.get('/user/settings/:username',
+    controller.authenticateToken,
     param('username').not().isEmpty().escape(),
     controller.getUserSettings
 );
 
 // [POST] amend settings from username
 router.post('/user/settings/:username',
+    controller.authenticateToken,
     param('username').not().isEmpty().escape(),
     body('automatic_sprinkling').not().isEmpty().escape(),
     body('automatic_sprinkling_frequency').not().isEmpty().escape(),
@@ -93,6 +99,7 @@ router.post('/sonde/settings/:sonde_id',
 
 // [GET] emails for support
 router.get('/emails',
+    controller.authenticateToken,
     controller.getEmailSupport
 );
 

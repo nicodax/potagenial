@@ -16,17 +16,15 @@ public class UserLocalStore {
     public void storeUserData(User user) {
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.putString("username", user.username);
-        spEditor.putString("password", user.password);
-        spEditor.putString("email", user.email);
+        spEditor.putString("accessToken", user.access_token);
         spEditor.apply();
     }
 
     public User getLoggedInUser() {
         String username = userLocalDatabase.getString("username", "");
-        String password = userLocalDatabase.getString("password", "");
-        String email = userLocalDatabase.getString("email", "");
+        String access_token = userLocalDatabase.getString("accessToken", "");
 
-        return new User(username, password, email);
+        return new User(username, access_token);
     }
 
     public void setUserLoggedIn(boolean loggedIn) {
