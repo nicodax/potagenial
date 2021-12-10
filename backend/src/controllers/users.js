@@ -32,15 +32,19 @@ const logUserIn = (req, res) => {
         const refreshToken = authorization.generateRefreshToken(username);
         
         const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-
-        database.query(sqlQuery, (err, result) => {
-            if (err) res.sendStatus(520);
-            res.json([{ 
-                user_username: username,
-                accessToken: accessToken,
-                refreshToken: refreshToken
-            }]);
-        });
+        
+        try {
+            database.query(sqlQuery, (err, result) => {
+                res.json([{ 
+                    user_username: username,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                }]);
+            });
+        } catch (err) {
+            res.sendStatus(520);
+        }
+        
     });
 };
 
@@ -53,31 +57,34 @@ const signUserIn = (req, res) => {
         ('${req.body.username}', '${req.body.password}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.email}', \
         '${req.body.birthdate}', '${req.body.sexe}', '${req.body.country}', '${req.body.city}', '${req.body.address}', \
         ${req.body.house_number}, ${req.body.zipcode});`;
-
-    database.query(sqlQuery, (err, result) => {
-        if (err) res.sendStatus(400);
-
-        const username = req.body.username;
-        const accessToken = authorization.generateAccessToken(username);
-        const refreshToken = authorization.generateRefreshToken(username);
-
-        const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-
-        database.query(sqlQuery, (err, result) => { if (err) res.sendStatus(520); });
-
-        if(!result) res.json(result);
-        res.json({
-            accessToken: accessToken,
-            refreshToken: refreshToken
-        });
-    });
+    
+    try {
+        database.query(sqlQuery, (err, result) => {
+            const username = req.body.username;
+            const accessToken = authorization.generateAccessToken(username);
+            const refreshToken = authorization.generateRefreshToken(username);
+    
+            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
+    
+            database.query(sqlQuery, (err, result) => { if (err) res.sendStatus(520); });
+    
+            if(!result) res.json(result);
+            res.json({
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            });
+        }); 
+    } catch (err) {
+        res.sendStatus(400);
+    }
+    
 };
 
 const logUserOut = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0)  res.send(errors.array());
 
-    const sqlQuery = `DELETE * FROM tokens WHERE token = '${req.body.refreshToken}';`;
+    const sqlQuery = `DELETE FROM tokens WHERE token = '${req.body.refreshToken}';`;
 
     database.query(sqlQuery, (err, result) => {
         if (err) res.sendStatus(520);
