@@ -61,6 +61,8 @@ const authenticateToken = (req, res, next) => {
     console.log(token == null)
     if(token == null) return res.sendStatus(401);
 
+    console.log('auth header is present');
+
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403);
         req.user = user;
