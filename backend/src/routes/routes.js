@@ -103,4 +103,10 @@ router.get('/emails',
     controller.getEmailSupport
 );
 
+// [GET] authenticated
+router.get('/authenticated',
+    controller.authenticateToken,
+    controller.authenticated
+);
+
 module.exports = router;

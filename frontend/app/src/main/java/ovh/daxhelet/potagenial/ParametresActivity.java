@@ -107,7 +107,7 @@ public class ParametresActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", "bearer test");
+                headers.put("Authorization", "bearer " + user.access_token);
                 return headers;
             }
         };
@@ -153,7 +153,15 @@ public class ParametresActivity extends AppCompatActivity {
                 Toast.makeText(ParametresActivity.this,
                         "An unexpected error occurred", Toast.LENGTH_SHORT).show();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer " + user.access_token);
+                return headers;
+            }
+        };
 
         requestQueue.add(jsonObjectRequest);
     }

@@ -56,12 +56,8 @@ const signJwt = (username) => {
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    console.log(authHeader);
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token == null)
     if(token == null) return res.sendStatus(401);
-
-    console.log('auth header is present');
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) return res.sendStatus(403);
@@ -214,6 +210,10 @@ const getEmailSupport = (req, res) => {
         }
 }
 
+const authenticated = (req, res) => {
+    res.json({"authenticated": true});
+}
+
 module.exports = {
     getUser,
     signUserIn,
@@ -226,6 +226,7 @@ module.exports = {
     postUserSettings,
     postSondeSettings, 
     getEmailSupport,
-    authenticateToken
+    authenticateToken,
+    authenticated
 }
 

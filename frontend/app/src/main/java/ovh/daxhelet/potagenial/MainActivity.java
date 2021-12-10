@@ -2,13 +2,30 @@ package ovh.daxhelet.potagenial;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -140,7 +157,42 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean authenticate() {
         UserLocalStore userLocalStore = new UserLocalStore(this);
+        volleyAuthenticated();
         return userLocalStore.getUserLoggedIn();
+    }
+
+    public void volleyAuthenticated(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+        String url = "http://daxhelet.ovh:3535/authenticated";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    userLocalStore.setUserLoggedIn(response.getBoolean("authenticated"));
+                } catch (JSONException e) {
+                    userLocalStore.setUserLoggedIn(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLocalStore.setUserLoggedIn(false);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer " + user.access_token);
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
     }
 
     private void logOut() {

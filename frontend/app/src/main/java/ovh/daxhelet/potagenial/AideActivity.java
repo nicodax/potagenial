@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -43,15 +46,16 @@ public class AideActivity extends AppCompatActivity {
 
         Log.d("test", "la page aide est ok!");
 
-        volleyGetEmail();
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+
+        volleyGetEmail(user);
 
         imessage = findViewById(R.id.message);
         subject = findViewById(R.id.subject);
         bouton = findViewById(R.id.bouton);
 
         Log.d("connection", "connection ok !");
-        UserLocalStore userLocalStore = new UserLocalStore(this);
-        User user = userLocalStore.getLoggedInUser();
 
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +154,7 @@ public class AideActivity extends AppCompatActivity {
         }
     }
 
-    public void volleyGetEmail(){
+    public void volleyGetEmail(User user){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
 
@@ -171,7 +175,15 @@ public class AideActivity extends AppCompatActivity {
                         " occured", Toast.LENGTH_SHORT).show();
             }
         }, error -> Toast.makeText(AideActivity.this, "An unexpected error " +
-                "occurred", Toast.LENGTH_SHORT).show());
+                "occurred", Toast.LENGTH_SHORT).show())
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer " + user.access_token);
+                return headers;
+            }
+        };;
 
         requestQueue.add(jsonArrayRequest);
     }
