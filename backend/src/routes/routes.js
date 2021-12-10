@@ -89,14 +89,14 @@ router.put('/user/address',
 // ################################################################
   
 // [GET] settings from username
-router.get('/user/settings/:username',
+router.get('/settings/:username',
     authorization.authenticateToken,
     param('username').not().isEmpty().escape(),
     settings.getUserSettings
 );
 
 // [POST] amend settings from username
-router.post('/user/settings/:username',
+router.post('/settings/:username',
     authorization.authenticateToken,
     param('username').not().isEmpty().escape(),
     body('automatic_sprinkling').not().isEmpty().escape(),
@@ -105,7 +105,7 @@ router.post('/user/settings/:username',
 );
 
 // [POST] amend settings from arduino
-router.post('/sonde/settings/:sonde_id',
+router.post('/settings/sonde/:sonde_id',
     param('sonde_id').not().isEmpty().escape(),
     body('settings_temperature_outside').not().isEmpty().escape(),
     body('settings_temperature_ground').not().isEmpty().escape(),
@@ -120,7 +120,7 @@ router.post('/sonde/settings/:sonde_id',
 // ################################################################
 
 // [GET] emails for support
-router.get('/emails',
+router.get('/help/emails',
     authorization.authenticateToken,
     help.getEmailSupport
 );
@@ -130,13 +130,13 @@ router.get('/emails',
 // ################################################################
 
 // [GET] authenticated
-router.get('/authenticated',
+router.get('/authorization/authenticated',
     authorization.authenticateToken,
     authorization.authenticated
 );
 
 // [POST] refresh access token
-router.post('/token',
+router.post('/authorization/token',
     body('token').not().isEmpty().escape(),
     authorization.refreshAccessToken
 );
