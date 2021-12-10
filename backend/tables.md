@@ -87,16 +87,20 @@ CREATE TABLE settings (
 ### Table emails
 
 ```sql
-
 CREATE TABLE emails (
-    email_user varchar(45) NOT  NULL,
-    email_client varchar(45) NOT  NULL,
-    password_client varchar(45) NOT  NULL,
-
+    email_user varchar(45) NOT NULL,
+    email_client varchar(45) NOT NULL,
+    password_client varchar(45) NOT NULL,
     CONSTRAINT pk_emails PRIMARY KEY (email_user, email_client, password_client)
-
 );
+```
 
+### Table tokens
+
+```sql
+CREATE TABLE tokens (
+    token varchar(256) NOT NULL PRIMARY KEY
+);
 ```
 
 # Insertion d'un utilisateur placeholder et de son matériel

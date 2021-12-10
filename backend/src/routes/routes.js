@@ -109,4 +109,16 @@ router.get('/authenticated',
     controller.authenticated
 );
 
+// [POST] refresh access token
+router.post('/token',
+    body('token').not().isEmpty().escape(),
+    controller.refreshAccessToken
+);
+
+// [POST] log user out
+router.post('/user/logout',
+    param('refreshToken').not().isEmpty().escape(),
+    controller.logUserOut
+);
+
 module.exports = router;

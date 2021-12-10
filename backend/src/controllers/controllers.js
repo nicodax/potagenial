@@ -12,13 +12,13 @@ const getUser = (req, res) => {
 
         try {
             database.query(sqlQuery, (err, result) => {
-                if (err) res.status(520);
+                if (err) res.sendStatus(520);
                 
                 res.json(result);
             });
         }
         catch(err) {
-            res.status(520);
+            res.sendStatus(520);
         }
     }
 };
@@ -31,27 +31,55 @@ const logUserIn = (req, res) => {
         const sqlQuery = `SELECT * FROM users WHERE user_username = '${req.body.username}' AND user_password = '${req.body.password}'`;
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(520);
+            if (err) res.sendStatus(520);
 
             const username = result[0].user_username;
 
-            const accessToken = signJwt(username);
+            const accessToken = generateAccessToken(username);
+            const refreshToken = generateRefreshToken(username);
             
-            res.json([{ 
-                user_username: username,
-                accessToken: accessToken
-            }]);
+            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
+            database.query(sqlQuery, (err, result) => {
+                if (err) res.sendStatus(520);
+                res.json([{ 
+                    user_username: username,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                }]);
+            });
         });
     }
 };
 
-const signJwt = (username) => {
+const logUserOut = (req, res) => {
+    const errors = validationResult(req);
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const sqlQuery = `DELETE * FROM tokens WHERE token = '${req.body.refreshToken}'`;
+
+        database.query(sqlQuery, (err, result) => {
+            if (err) res.sendStatus(520);
+
+            res.sendStatus(200);
+        });
+    }
+};
+
+const generateAccessToken = (username) => {
     const user = {
         name: username
     }
 
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-    return accessToken;
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s'});
+}
+
+const generateRefreshToken = (username) => {
+    const user = {
+        name: username
+    }
+
+    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 }
 
 const authenticateToken = (req, res, next) => {
@@ -74,12 +102,20 @@ const signUserIn = (req, res) => {
         const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES ('${req.body.username}', '${req.body.password}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.email}', '${req.body.birthdate}', '${req.body.sexe}', '${req.body.country}', '${req.body.city}', '${req.body.address}', ${req.body.house_number}, ${req.body.zipcode});`;
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
 
             const username = req.body.username;
-            const accessToken = signJwt(username);
-            
-            if(result) res.json({accessToken: accessToken});
+            const accessToken = generateAccessToken(username);
+            const refreshToken = generateRefreshToken(username);
+            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
+            database.query(sqlQuery, (err, result) => {
+                if (err) res.sendStatus(520);
+            });
+
+            if(result) res.json({
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            });
             else res.json(result);
         });
     }
@@ -93,7 +129,7 @@ const amendPwd = (req, res) => {
         const sqlQuery = `UPDATE users SET user_password = '${req.body.password}' where user_username = '${req.body.username}'`;
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
             
             res.json(result);
         });
@@ -108,7 +144,7 @@ const amendName = (req, res) => {
         const sqlQuery = `UPDATE users SET user_firstname = '${req.body.firstname}', user_lastname = '${req.body.lastname}' where user_username = '${req.body.username}'`;
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
             
             res.json(result);
         });
@@ -123,7 +159,7 @@ const amendEmail = (req, res) => {
         const sqlQuery = `UPDATE users SET user_email = '${req.body.email}' where user_username = '${req.body.username}'`;
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
             
             res.json(result);
         });
@@ -138,7 +174,7 @@ const amendAddress = (req, res) => {
         const sqlQuery = `UPDATE users SET user_country = '${req.body.country}', user_city = '${req.body.city}', user_address = '${req.body.address}', user_house_number = ${req.body.house_number}, user_zipcode = ${req.body.zipcode} where user_username = '${req.body.username}'`;
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
             
             res.json(result);
         });
@@ -154,13 +190,13 @@ const getUserSettings = (req, res) => {
 
         try {
             database.query(sqlQuery, (err, result) => {
-                if (err) res.status(520);
+                if (err) res.sendStatus(520);
                 
                 res.json(result);
             });
         }
         catch(err) {
-            res.status(520);
+            res.sendStatus(520);
         }
     }
 };
@@ -173,7 +209,7 @@ const postUserSettings = (req, res) => {
         const sqlQuery = `UPDATE settings SET settings_automatic_sprinkling = '${req.body.automatic_sprinkling}', settings_automatic_sprinkling_frequency = '${req.body.automatic_sprinkling_frequency}' WHERE user_username = '${req.params.username}'`
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
             
             res.json(result);
         });
@@ -188,7 +224,7 @@ const postSondeSettings = (req, res) => {
         const sqlQuery = `UPDATE settings SET settings_temperature_outside = '${req.body.settings_temperature_outside}', settings_temperature_ground = '${req.body.settings_temperature_ground}', settings_humidity = '${req.body.settings_humidity}', settings_last_sprinkling = (SELECT STR_TO_DATE('${req.body.settings_last_sprinkling}', '%d-%m-%Y')), settings_last_sprinkling_quantity = '${req.body.settings_last_sprinkling_quantity}' WHERE sonde_id = '${req.params.sonde_id}'`
 
         database.query(sqlQuery, (err, result) => {
-            if (err) res.status(400);
+            if (err) res.sendStatus(400);
             
             res.json(result);
         });
@@ -200,19 +236,39 @@ const getEmailSupport = (req, res) => {
 
         try {
             database.query(sqlQuery, (err, result) => {
-                if (err) res.status(520);
+                if (err) res.sendStatus(520);
                 
                 res.json(result);
             });
         }
         catch(err) {
-            res.status(520);
+            res.sendStatus(520);
         }
 }
 
 const authenticated = (req, res) => {
     res.json({"authenticated": true});
 }
+
+const refreshAccessToken = (req, res) => {
+    const errors = validationResult(req);
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const sqlQuery = `SELECT * FROM tokens WHERE token = '${req.body.token}';`;
+
+        database.query(sqlQuery, (err, result) => {
+            if (err) res.sendStatus(500);
+            if (!result) res.sendStatus(403);
+        });
+
+        jwt.verify(req.body.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if(err) res.sendStatus(403)
+            const accessToken = generateAccessToken({ name: user.name });
+            res.json({accessToken: accessToken});
+        })
+    }
+};
 
 module.exports = {
     getUser,
@@ -227,6 +283,8 @@ module.exports = {
     postSondeSettings, 
     getEmailSupport,
     authenticateToken,
-    authenticated
+    authenticated,
+    refreshAccessToken,
+    logUserOut
 }
 
