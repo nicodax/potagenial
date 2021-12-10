@@ -37,10 +37,10 @@ const logUserIn = (req, res) => {
 
             const accessToken = signJwt(username);
             
-            res.json({ 
+            res.json([{ 
                 user_username: username,
                 accessToken: accessToken
-            });
+            }]);
         });
     }
 };
