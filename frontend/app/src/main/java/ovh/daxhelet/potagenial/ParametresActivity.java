@@ -2,8 +2,11 @@ package ovh.daxhelet.potagenial;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ParametresActivity extends AppCompatActivity {
 
@@ -97,12 +101,32 @@ public class ParametresActivity extends AppCompatActivity {
                     sondeId.setText(response.getJSONObject(0).getString("sonde_id"));
                 }
             } catch (JSONException e) {
-                Log.d("testdebug", e.toString());
-                Toast.makeText(ParametresActivity.this, "Incorrect credentials " +
-                        "entered!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ParametresActivity.this, "An unexpected error " +
+                        "occurred", Toast.LENGTH_SHORT).show();
             }
-        }, error -> Toast.makeText(ParametresActivity.this, "An unexpected error " +
-                        "occurred", Toast.LENGTH_SHORT).show())
+        }, error -> {
+            int httpStatusResponse = error.networkResponse.statusCode;
+            if (httpStatusResponse == 403){
+                volleyRefreshToken();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ParametresActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle(Html.fromHtml("<font>Mise à jour de la session</font>"));
+                builder.setMessage("Cliquer sur 'OK' pour relancer l'activité");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        recreate();
+                    }
+                });
+
+                builder.show();
+            }
+            else {
+                Toast.makeText(ParametresActivity.this, "An unexpected error " +
+                        "occurred", Toast.LENGTH_SHORT).show();
+            }
+        })
         {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -150,8 +174,27 @@ public class ParametresActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ParametresActivity.this,
-                        "An unexpected error occurred", Toast.LENGTH_SHORT).show();
+                int httpStatusResponse = error.networkResponse.statusCode;
+                if (httpStatusResponse == 403){
+                    volleyRefreshToken();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ParametresActivity.this);
+                    builder.setCancelable(false);
+                    builder.setTitle(Html.fromHtml("<font>Mise à jour de la session</font>"));
+                    builder.setMessage("Cliquer sur 'OK' pour relancer l'activité");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            recreate();
+                        }
+                    });
+
+                    builder.show();
+                }
+                else {
+                    Toast.makeText(ParametresActivity.this, "An unexpected error " +
+                            "occurred", Toast.LENGTH_SHORT).show();
+                }
             }
         })
         {
@@ -162,6 +205,43 @@ public class ParametresActivity extends AppCompatActivity {
                 return headers;
             }
         };
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void volleyRefreshToken(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+        String url = "http://daxhelet.ovh:3535/token";
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("token", user.refresh_token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    userLocalStore.setAccessToken(response.getString("accessToken"));
+                } catch (JSONException e) {
+                    userLocalStore.setUserLoggedIn(false);
+                    Intent login = new Intent(ParametresActivity.this, LoginActivity.class);
+                    startActivity(login);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLocalStore.setUserLoggedIn(false);
+                Intent login = new Intent(ParametresActivity.this, LoginActivity.class);
+                startActivity(login);
+            }
+        });
 
         requestQueue.add(jsonObjectRequest);
     }

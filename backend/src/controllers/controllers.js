@@ -61,7 +61,7 @@ const logUserOut = (req, res) => {
         database.query(sqlQuery, (err, result) => {
             if (err) res.sendStatus(520);
 
-            res.sendStatus(200);
+            res.json({ "msg": "logged out" });
         });
     }
 };
@@ -71,7 +71,7 @@ const generateAccessToken = (username) => {
         name: username
     }
 
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s'});
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20m'});
 }
 
 const generateRefreshToken = (username) => {
@@ -265,7 +265,7 @@ const refreshAccessToken = (req, res) => {
         jwt.verify(req.body.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if(err) res.sendStatus(403)
             const accessToken = generateAccessToken({ name: user.name });
-            res.json({accessToken: accessToken});
+            res.json({"accessToken": accessToken});
         })
     }
 };

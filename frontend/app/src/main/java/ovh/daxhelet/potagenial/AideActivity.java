@@ -3,6 +3,7 @@ package ovh.daxhelet.potagenial;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,9 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -174,8 +179,29 @@ public class AideActivity extends AppCompatActivity {
                 Toast.makeText(AideActivity.this, "An unexpected error" +
                         " occured", Toast.LENGTH_SHORT).show();
             }
-        }, error -> Toast.makeText(AideActivity.this, "An unexpected error " +
-                "occurred", Toast.LENGTH_SHORT).show())
+        }, error -> {
+            int httpStatusResponse = error.networkResponse.statusCode;
+            if (httpStatusResponse == 403){
+                volleyRefreshToken();
+                AlertDialog.Builder builder = new AlertDialog.Builder(AideActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle(Html.fromHtml("<font>Mise à jour de la session</font>"));
+                builder.setMessage("Cliquer sur 'OK' pour relancer l'activité");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        recreate();
+                    }
+                });
+
+                builder.show();
+            }
+            else {
+                Toast.makeText(AideActivity.this, "An unexpected error " +
+                        "occurred", Toast.LENGTH_SHORT).show();
+            }
+        })
         {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -186,5 +212,42 @@ public class AideActivity extends AppCompatActivity {
         };;
 
         requestQueue.add(jsonArrayRequest);
+    }
+
+    public void volleyRefreshToken(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+        String url = "http://daxhelet.ovh:3535/token";
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("token", user.refresh_token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    userLocalStore.setAccessToken(response.getString("accessToken"));
+                } catch (JSONException e) {
+                    userLocalStore.setUserLoggedIn(false);
+                    Intent login = new Intent(AideActivity.this, LoginActivity.class);
+                    startActivity(login);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLocalStore.setUserLoggedIn(false);
+                Intent login = new Intent(AideActivity.this, LoginActivity.class);
+                startActivity(login);
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
     }
 }

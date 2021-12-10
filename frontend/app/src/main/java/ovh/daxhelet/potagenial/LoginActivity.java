@@ -72,7 +72,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
 
                     User user = new User(username, response.getJSONObject(0)
-                            .getString("accessToken"));
+                            .getString("accessToken"), response.getJSONObject(0)
+                            .getString("refreshToken"));
                     userLocalStore.storeUserData(user);
                     userLocalStore.setUserLoggedIn(true);
 

@@ -121,7 +121,7 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(SignupActivity.this, "Sign up successful!",
                     Toast.LENGTH_SHORT).show();
 
-            User user = new User(username, response.getString("accessToken"));
+            User user = new User(username, response.getString("accessToken"), response.getString("refreshToken"));
             userLocalStore.storeUserData(user);
             userLocalStore.setUserLoggedIn(true);
 
