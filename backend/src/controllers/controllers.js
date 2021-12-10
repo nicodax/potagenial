@@ -8,7 +8,7 @@ const getUser = (req, res) => {
     if (errors.array().length > 0) {
         res.send(errors.array());
     } else {
-        const sqlQuery = `SELECT * FROM users WHERE user_username = '${req.params.username}'`;
+        const sqlQuery = `SELECT user_username, user_role, user_money, user_firstname, user_lastname, user_email, (SELECT DATE_FORMAT(user_birthdate, '%d-%m-%Y')) AS user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode FROM users WHERE user_username = '${req.params.username}'`;
 
         try {
             database.query(sqlQuery, (err, result) => {

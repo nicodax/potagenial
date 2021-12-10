@@ -114,5 +114,5 @@ INSERT INTO sondes (sonde_status, sonde_extra_info) VALUES ('RUNNING', 'IPv4=X.Y
 
 ```sql
 INSERT INTO orders (user_username, product_name, product_quantity) VALUES ('potagenial', 'graines de tournesol', 5);
-INSERT INTO settings (user_username, camera_id, sonde_id) VALUES ('potagenial', 1, 1);
+INSERT INTO settings (user_username, camera_id, sonde_id, settings_temperature_outside, settings_temperature_ground, settings_humidity, settings_last_sprinkling, settings_last_sprinkling_quantity, settings_automatic_sprinkling, settings_automatic_sprinkling_frequency) VALUES ('potagenial', 1, 1, 15, 25, 55, (SELECT STR_TO_DATE('10-12-2021', '%d-%m-%Y')), 15, 1, 6);
 ```
