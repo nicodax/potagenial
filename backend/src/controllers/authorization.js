@@ -22,10 +22,10 @@ const generateRefreshToken = (username) => {
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if(token == null) return res.sendStatus(401);
+    if(token == null) { return res.sendStatus(401); }
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
+        if (err) { return res.sendStatus(403); }
 
         req.user = user;
         next()
@@ -38,21 +38,23 @@ const authenticated = (req, res) => {
 
 const refreshAccessToken = (req, res) => {
     const errors = validationResult(req);
-    if (errors.array().length > 0) res.send(errors.array());
+    if (errors.array().length > 0) { res.send(errors.array()); }
+    else {
+        const sqlQuery = `SELECT * FROM tokens WHERE token = '${req.body.token}';`;
 
-    const sqlQuery = `SELECT * FROM tokens WHERE token = '${req.body.token}';`;
-
-    database.query(sqlQuery, (err, result) => {
-        if (err) res.sendStatus(500);
-        if (!result) res.sendStatus(403);
-    });
-
-    jwt.verify(req.body.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if(err) res.sendStatus(403);
-
-        const accessToken = authorization.generateAccessToken({ name: user.name });
-        res.json({"accessToken": accessToken});
-    })
+        database.query(sqlQuery, (err, result) => {
+            if (err) { res.sendStatus(500); }
+            if (!result) { res.sendStatus(403); }
+        });
+    
+        jwt.verify(req.body.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if(err) { res.sendStatus(403); }
+            else {
+                const accessToken = authorization.generateAccessToken({ name: user.name });
+                res.json({"accessToken": accessToken});
+            }
+        })
+    }
 };
 
 
