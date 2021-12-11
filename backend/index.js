@@ -16,6 +16,7 @@ const routes = require('./src/routes/routes');
 // app.use(routes);
 
 app.get('/.well-known/acme-challenge/CgfHDZ2b5mYC3cT_ZsyfCBJ21hl4TSC7nlCZ2ePcLWI', (req, res) => {
+    console.log('ok')
     res.sendFile(path.join(__dirname, '.well-known/acme-challenge/CgfHDZ2b5mYC3cT_ZsyfCBJ21hl4TSC7nlCZ2ePcLWI'));
 });
 
