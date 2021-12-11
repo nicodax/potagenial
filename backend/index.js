@@ -15,10 +15,7 @@ const routes = require('./src/routes/routes');
 // app.use(express.json());
 // app.use(routes);
 
-app.get('/.well-known/acme-challenge/CgfHDZ2b5mYC3cT_ZsyfCBJ21hl4TSC7nlCZ2ePcLWI', (req, res) => {
-    console.log('ok')
-    res.sendFile(path.join(__dirname, '.well-known/acme-challenge/CgfHDZ2b5mYC3cT_ZsyfCBJ21hl4TSC7nlCZ2ePcLWI'));
-});
+app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 app.listen(80, () => {
   console.log('HTTP server running on port 80');
