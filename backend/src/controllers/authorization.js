@@ -50,7 +50,7 @@ const refreshAccessToken = (req, res) => {
         jwt.verify(req.body.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if(err) { res.sendStatus(403); }
             else {
-                const accessToken = authorization.generateAccessToken({ name: user.name });
+                const accessToken = generateAccessToken({ name: user.name });
                 res.json({"accessToken": accessToken});
             }
         })
