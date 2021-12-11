@@ -61,7 +61,7 @@ public class ParametresActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
+        String url = "https://daxhelet.ovh:3535/user/settings/" + user.username;
 
         CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
                 url, null, response -> {
@@ -143,7 +143,7 @@ public class ParametresActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
+        String url = "https://daxhelet.ovh:3535/user/settings/" + user.username;
 
         CheckBox automaticSprinkling = (CheckBox) findViewById(R.id.cbArrosageAutomatique);
         Number automaticSprinklingValue;
@@ -213,7 +213,7 @@ public class ParametresActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "http://daxhelet.ovh:3535/token";
+        String url = "https://daxhelet.ovh:3535/token";
 
         JSONObject params = new JSONObject();
         try {

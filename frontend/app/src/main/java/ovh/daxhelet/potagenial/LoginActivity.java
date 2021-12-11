@@ -2,6 +2,7 @@ package ovh.daxhelet.potagenial;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void volleyLogin(String username, String password){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://daxhelet.ovh:3535/user/login";
+        String url = "https://daxhelet.ovh:3535/user/login";
 
         UserLocalStore userLocalStore = new UserLocalStore(this);
 
@@ -85,8 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Incorrect credentials " +
                         "entered!", Toast.LENGTH_SHORT).show();
             }
-        }, error -> Toast.makeText(LoginActivity.this, "An unexpected error occurred",
-                Toast.LENGTH_SHORT).show());
+        }, error -> {
+            Toast.makeText(LoginActivity.this, "An unexpected error occurred",
+                    Toast.LENGTH_SHORT).show();
+            Log.d("test", error.toString());
+        });
 
         requestQueue.add(jsonArrayRequest);
     }

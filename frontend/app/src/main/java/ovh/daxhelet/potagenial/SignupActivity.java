@@ -79,7 +79,7 @@ public class SignupActivity extends AppCompatActivity {
     private void volleySignup(String username, String password, String email, String firstname,
                               String lastname) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://daxhelet.ovh:3535/user";
+        String url = "https://daxhelet.ovh:3535/user";
 
         JSONObject params = new JSONObject();
         try {
