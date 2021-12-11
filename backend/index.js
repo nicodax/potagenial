@@ -17,8 +17,8 @@ const routes = require('./src/routes/routes');
 
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
-app.listen(8080, () => {
-  console.log('HTTP server running on port 8080');
+app.listen(80, () => {
+  console.log('HTTP server running on port 80');
 });
 
 // const privateKey = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8');
