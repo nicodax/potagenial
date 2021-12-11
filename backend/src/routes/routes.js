@@ -43,7 +43,7 @@ router.post('/user',
 
 // [POST] log user out
 router.post('/user/logout',
-    param('refreshToken').not().isEmpty().escape(),
+    body('refreshToken').not().isEmpty().escape(),
     users.logUserOut
 );
 
