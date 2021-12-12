@@ -60,6 +60,13 @@ public class SignupActivity extends AppCompatActivity {
             } else if (!(inputPassword.equals(inputConfirmPassword))) {
                 Toast.makeText(SignupActivity.this, "Passwords must match!",
                         Toast.LENGTH_SHORT).show();
+            } else if (!validPassword(inputPassword)) {
+                Toast.makeText(SignupActivity.this, "Passwords must contain at least " +
+                        "8 characters, with at least one capital letter, one number and one special " +
+                        "character (!@#$%^&*)!", Toast.LENGTH_SHORT).show();
+            } else if (!inputEmail.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
+                Toast.makeText(SignupActivity.this, inputEmail + " is not a valid " +
+                        "email format", Toast.LENGTH_SHORT).show();
             }
             else {
                 volleySignup(inputUsername, inputPassword, inputEmail, inputFirstname,
@@ -72,6 +79,28 @@ public class SignupActivity extends AppCompatActivity {
                     LoginActivity.class);
             startActivity(intent);
         });
+    }
+
+    public static boolean validPassword(String password){
+        boolean upCase = false;
+        boolean loCase = false;
+        boolean isDigit = false;
+        boolean spChar = false;
+        if (password.length()>7){
+            if (password.matches(".+[A-Z].+")){
+                upCase = true;
+            }
+            if (password.matches(".+[a-z].+")){
+                loCase = true;
+            }
+            if (password.matches(".+[1-9].+")){
+                isDigit = true;
+            }
+            if (password.matches(".+[!@#$%^&*].+")){
+                spChar = true;
+            }
+        }
+        return (upCase && loCase && isDigit && spChar);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -114,7 +143,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signup(JSONObject response, String username) throws JSONException {
-        if(response.length() == 1) {
+        if(response.length() == 2) {
             UserLocalStore userLocalStore = new UserLocalStore(this);
 
             Toast.makeText(SignupActivity.this, "Sign up successful!",

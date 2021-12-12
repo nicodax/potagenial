@@ -9,7 +9,7 @@ CREATE TABLE users (
     user_money integer NOT NULL DEFAULT 0,
     user_firstname varchar(45) NOT NULL,
     user_lastname varchar(45) NOT NULL,
-    user_email varchar(45) NOT NULL,
+    user_email varchar(45) NOT NULL UNIQUE,
     user_birthdate date NOT NULL,
     user_sexe varchar(1) NOT NULL,
     user_country varchar(45) NOT NULL,
