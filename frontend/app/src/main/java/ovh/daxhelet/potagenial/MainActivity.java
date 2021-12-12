@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "https://daxhelet.ovh:3535/authenticated";
+        String url = "https://daxhelet.ovh:3535/authorization/authenticated";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
                 null, new Response.Listener<JSONObject>() {
@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     userLocalStore.setUserLoggedIn(response.getBoolean("authenticated"));
                 } catch (JSONException e) {
+                    Log.d("test", e.toString());
                     userLocalStore.setUserLoggedIn(false);
                     volleyRefreshToken();
                 }
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 userLocalStore.setUserLoggedIn(false);
+                Log.d("test", error.toString());
                 volleyRefreshToken();
             }
         })
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "https://daxhelet.ovh:3535/token";
+        String url = "https://daxhelet.ovh:3535/authorization/token";
 
         JSONObject params = new JSONObject();
         try {
@@ -208,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     userLocalStore.setAccessToken(response.getString("accessToken"));
                 } catch (JSONException e) {
                     userLocalStore.setUserLoggedIn(false);
+                    Log.d("test", "restarting");
                     Intent login = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(login);
                 }
@@ -216,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 userLocalStore.setUserLoggedIn(false);
+                Log.d("test", "restarting");
                 Intent login = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(login);
             }

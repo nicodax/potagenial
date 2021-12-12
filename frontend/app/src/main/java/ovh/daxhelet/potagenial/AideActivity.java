@@ -163,7 +163,7 @@ public class AideActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
 
-        String url = "https://daxhelet.ovh:3535/emails"  ;
+        String url = "https://daxhelet.ovh:3535/help/emails"  ;
 
         CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
                 url, null, response -> {
@@ -218,7 +218,7 @@ public class AideActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "https://daxhelet.ovh:3535/token";
+        String url = "https://daxhelet.ovh:3535/authorization/token";
 
         JSONObject params = new JSONObject();
         try {
