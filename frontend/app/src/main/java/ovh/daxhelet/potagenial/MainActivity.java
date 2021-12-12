@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
+        volleyLogout();
         UserLocalStore userLocalStore = new UserLocalStore(this);
         userLocalStore.clearUserData();
         userLocalStore.setUserLoggedIn(false);
