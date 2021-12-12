@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
         }, error -> {
             Toast.makeText(LoginActivity.this, "An unexpected error occurred",
                     Toast.LENGTH_SHORT).show();
-            Log.d("test", error.toString());
         });
 
         requestQueue.add(jsonArrayRequest);

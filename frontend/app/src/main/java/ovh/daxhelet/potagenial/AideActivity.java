@@ -49,8 +49,6 @@ public class AideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aide);
 
-        Log.d("test", "la page aide est ok!");
-
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
 
@@ -59,8 +57,6 @@ public class AideActivity extends AppCompatActivity {
         imessage = findViewById(R.id.message);
         subject = findViewById(R.id.subject);
         bouton = findViewById(R.id.bouton);
-
-        Log.d("connection", "connection ok !");
 
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +171,6 @@ public class AideActivity extends AppCompatActivity {
                     email = response.getJSONObject(0).getString("email_user");
                 }
             } catch (JSONException e) {
-                Log.d("testdebug", e.toString());
                 Toast.makeText(AideActivity.this, "An unexpected error" +
                         " occured", Toast.LENGTH_SHORT).show();
             }

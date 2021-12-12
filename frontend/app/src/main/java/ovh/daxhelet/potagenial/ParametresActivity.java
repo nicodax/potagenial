@@ -125,7 +125,6 @@ public class ParametresActivity extends AppCompatActivity {
             else {
                 Toast.makeText(ParametresActivity.this, "An unexpected error " +
                         "occurred", Toast.LENGTH_SHORT).show();
-                Log.d("test", String.valueOf(error.networkResponse.statusCode));
             }
         })
         {
@@ -195,7 +194,6 @@ public class ParametresActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(ParametresActivity.this, "An unexpected error " +
                             "occurred", Toast.LENGTH_SHORT).show();
-                    Log.d("test", error.toString());
                 }
             }
         })
