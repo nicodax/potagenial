@@ -29,7 +29,7 @@ const logUserIn = (req, res) => {
             if (err) { res.sendStatus(520); }
             else if (result == []) { res.sendStatus(400); }
             else {
-                console.log(result == []);
+                console.log(typeof(result));
                 const username = result[0].user_username;
                 const accessToken = authorization.generateAccessToken(username);
                 const refreshToken = authorization.generateRefreshToken(username);
