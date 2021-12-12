@@ -61,7 +61,7 @@ public class ParametresActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
+        String url = "https://daxhelet.ovh:3535/settings/" + user.username;
 
         CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
                 url, null, response -> {
@@ -125,6 +125,7 @@ public class ParametresActivity extends AppCompatActivity {
             else {
                 Toast.makeText(ParametresActivity.this, "An unexpected error " +
                         "occurred", Toast.LENGTH_SHORT).show();
+                Log.d("test", String.valueOf(error.networkResponse.statusCode));
             }
         })
         {
@@ -143,7 +144,7 @@ public class ParametresActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "http://daxhelet.ovh:3535/user/settings/" + user.username;
+        String url = "https://daxhelet.ovh:3535/settings/" + user.username;
 
         CheckBox automaticSprinkling = (CheckBox) findViewById(R.id.cbArrosageAutomatique);
         Number automaticSprinklingValue;
@@ -194,6 +195,7 @@ public class ParametresActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(ParametresActivity.this, "An unexpected error " +
                             "occurred", Toast.LENGTH_SHORT).show();
+                    Log.d("test", error.toString());
                 }
             }
         })
@@ -213,7 +215,7 @@ public class ParametresActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
         User user = userLocalStore.getLoggedInUser();
-        String url = "http://daxhelet.ovh:3535/token";
+        String url = "https://daxhelet.ovh:3535/authorization/token";
 
         JSONObject params = new JSONObject();
         try {

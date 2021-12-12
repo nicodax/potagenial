@@ -10,5 +10,5 @@ potagenial.wiki
 # MySQL
 mysql
 
-# SSL certificates
-cert
+# Letsencrypt SSL certificates
+.well-known

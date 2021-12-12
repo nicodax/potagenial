@@ -1,6 +1,5 @@
 const express = require('express');
 const https = require('https');
-const path = require('path');
 const fs = require('fs');
 
 const app = express();
@@ -14,9 +13,14 @@ const routes = require('./src/routes/routes');
 app.use(express.json());
 app.use(routes);
 
-const sslServer = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/daxhelet.ovh/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/daxhelet.ovh/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/daxhelet.ovh/chain.pem', 'utf8');
+
+const httpsServer = https.createServer({
+    key: privateKey,
+	cert: certificate,
+	ca: ca
 }, app)
 
-sslServer.listen(port, () => console.log(`Server running on port ${port}`));
+httpsServer.listen(port, () => console.log(`Server running on port ${port}`));
