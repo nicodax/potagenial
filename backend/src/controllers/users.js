@@ -27,9 +27,8 @@ const logUserIn = (req, res) => {
 
         database.query(sqlQuery, (err, result) => {
             if (err) { res.sendStatus(520); }
-            else if (result == []) { res.sendStatus(400); }
+            else if (!result[0].user_username) { res.sendStatus(400); }
             else {
-                console.log(typeof(result));
                 const username = result[0].user_username;
                 const accessToken = authorization.generateAccessToken(username);
                 const refreshToken = authorization.generateRefreshToken(username);
