@@ -25,40 +25,41 @@ const logUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}';`;
+        const sqlQuery = `SELECT user_username, user_password FROM users WHERE user_username = '${req.body.username}';`;
 
         database.query(sqlQuery, (err, result) => {
             if (err) { res.sendStatus(520); }
             else if (result.length == 0) { res.json(result); }
             else {
                 const passwordHash = result[0].user_password;
-                console.log(result);
-                argon2i.verify(passwordHash, req.body.password).then(correct => {
-                    if (correct) {
-                        const username = result[0].user_username;
-                        const accessToken = authorization.generateAccessToken(username);
-                        const refreshToken = authorization.generateRefreshToken(username);
-                        
-                        const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-                        
-                        try {
-                            database.query(sqlQuery, (err, result) => {
-                                if (err) { res.sendStatus(520); }
-                                else {
-                                    res.json([{ 
-                                        user_username: username,
-                                        accessToken: accessToken,
-                                        refreshToken: refreshToken
-                                    }]);
-                                }
-                            });
-                        } catch (err) {
-                            res.sendStatus(520);
+                try {
+                    argon2i.verify(passwordHash, req.body.password).then(correct => {
+                        if (correct) {
+                            const username = result[0].user_username;
+                            const accessToken = authorization.generateAccessToken(username);
+                            const refreshToken = authorization.generateRefreshToken(username);
+                            
+                            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
+                            
+                            try {
+                                database.query(sqlQuery, (err, result) => {
+                                    if (err) { res.sendStatus(520); }
+                                    else {
+                                        res.json([{ 
+                                            user_username: username,
+                                            accessToken: accessToken,
+                                            refreshToken: refreshToken
+                                        }]);
+                                    }
+                                });
+                            } catch (err) {
+                                res.sendStatus(520);
+                            }
                         }
-                    } else {
-                        res.sendStatus(400);
-                    }
-                })
+                    })
+                } catch (error) {
+                    res.sendStatus(400);
+                }
             }
         });
     }
