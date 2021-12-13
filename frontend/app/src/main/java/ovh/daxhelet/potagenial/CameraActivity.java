@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +26,7 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class CameraActivity extends AppCompatActivity
@@ -39,6 +41,8 @@ public class CameraActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        volleyGetCamera();
+
         setContentView(R.layout.activity_camera);
 
         libVlc = new LibVLC(this);
@@ -51,15 +55,7 @@ public class CameraActivity extends AppCompatActivity
     {
         super.onStart();
 
-        mediaPlayer.attachViews(videoLayout, null, false, false);
 
-        Media media = new Media(libVlc, Uri.parse(rtspUrl));
-        media.setHWDecoderEnabled(true, false);
-        media.addOption(":network-caching=600");
-
-        mediaPlayer.setMedia(media);
-        media.release();
-        mediaPlayer.play();
     }
 
     @Override
@@ -82,30 +78,36 @@ public class CameraActivity extends AppCompatActivity
 
     public void volleyGetCamera(){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        UserLocalStore userLocalStore = new UserLocalStore(this);
-        User user = userLocalStore.getLoggedInUser();
         String url = "https://daxhelet.ovh:3535/camera/1";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String camera_ip = response.getString("camera_ip");
-                    String camera_username = response.getString("camera_username");
-                    String camera_password = response.getString("camera_password");
-                    rtspUrl = "rtsp://" + camera_username + ":" + camera_password + "@" + camera_ip + "/live.sdp";
-                } catch (JSONException e) {
-                    userLocalStore.setUserLoggedIn(false);
-                    volleyRefreshToken();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+
+        CustomJsonArrayRequest jsonArrayRequest = new CustomJsonArrayRequest(Request.Method.GET,
+                url, null, response -> {
+            try {
+                String camera_ip = response.getJSONObject(0).getString("camera_ip");
+                String camera_username = response.getJSONObject(0).getString("camera_username");
+                String camera_password = response.getJSONObject(0).getString("camera_password");
+                rtspUrl = "rtsp://" + camera_username + ":" + camera_password + "@" +
+                        camera_ip + "/live.sdp";
+
+                mediaPlayer.attachViews(videoLayout, null, false, false);
+
+                Media media = new Media(libVlc, Uri.parse(rtspUrl));
+                media.setHWDecoderEnabled(true, false);
+                media.addOption(":network-caching=600");
+
+                mediaPlayer.setMedia(media);
+                media.release();
+                mediaPlayer.play();
+            } catch (JSONException e) {
                 userLocalStore.setUserLoggedIn(false);
                 volleyRefreshToken();
             }
+        }, error -> {
+            userLocalStore.setUserLoggedIn(false);
+            volleyRefreshToken();
         })
         {
             @Override
@@ -116,7 +118,7 @@ public class CameraActivity extends AppCompatActivity
             }
         };
 
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.add(jsonArrayRequest);
     }
 
     public void volleyRefreshToken(){
