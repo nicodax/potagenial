@@ -139,8 +139,11 @@ public class SignupActivity extends AppCompatActivity {
                         Toast.makeText(SignupActivity.this,
                                 "Cannot create user", Toast.LENGTH_SHORT).show();
                     }
-                }, error -> Toast.makeText(SignupActivity.this,
-                                "Cannot create user", Toast.LENGTH_SHORT).show()
+                }, error -> {
+                    Toast.makeText(SignupActivity.this,
+                            "Cannot create user", Toast.LENGTH_SHORT).show();
+                    Log.d("test", error.toString());
+                }
         );
 
         requestQueue.add(jsonObjectRequest);
