@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "devStart": "nodemon devIndex.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
+    "argon2-ffi": "^2.0.0",
     "nodemon": "^2.0.15"
   }
 }
