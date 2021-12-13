@@ -21,6 +21,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SignupActivity extends AppCompatActivity {
 
     private EditText eUsername;
@@ -82,25 +85,26 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public static boolean validPassword(String password){
-        boolean upCase = false;
-        boolean loCase = false;
-        boolean isDigit = false;
-        boolean spChar = false;
         if (password.length()>7){
-            if (password.matches(".+[A-Z].+")){
-                upCase = true;
-            }
-            if (password.matches(".+[a-z].+")){
-                loCase = true;
-            }
-            if (password.matches(".+[1-9].+")){
-                isDigit = true;
-            }
-            if (password.matches(".+[!@#$%^&*].+")){
-                spChar = true;
-            }
+            Pattern loCaseLetter = Pattern.compile("[a-z]");
+            Pattern upCaseLetter = Pattern.compile("[A-Z]");
+            Pattern digit = Pattern.compile("[0-9]");
+            Pattern special = Pattern.compile ("[!@#$%^&*]");
+
+            Matcher hasLoCaseLetter = loCaseLetter.matcher(password);
+            Matcher hasUpCaseLetter = upCaseLetter.matcher(password);
+            Matcher hasDigit = digit.matcher(password);
+            Matcher hasSpecial = special.matcher(password);
+
+            Boolean loCase = hasLoCaseLetter.find();
+            Boolean upCase = hasUpCaseLetter.find();
+            Boolean isDigit = hasDigit.find();
+            Boolean spChar = hasSpecial.find();
+
+            return loCase && upCase && isDigit && spChar;
+        } else {
+            return false;
         }
-        return (upCase && loCase && isDigit && spChar);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

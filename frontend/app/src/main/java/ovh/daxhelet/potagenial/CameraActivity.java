@@ -26,7 +26,6 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 public class CameraActivity extends AppCompatActivity
