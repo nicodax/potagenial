@@ -31,9 +31,8 @@ const logUserIn = (req, res) => {
             if (err) { res.sendStatus(520); }
             else if (result.length == 0) { res.json(result); }
             else {
-                const password = new Buffer(req.body.password);
                 const passwordHash = result[0].user_password;
-                argon2i.verify(passwordHash, password).then(correct => {
+                argon2i.verify(passwordHash, req.body.password).then(correct => {
                     if (correct) {
                         const username = result[0].user_username;
                         const accessToken = authorization.generateAccessToken(username);
