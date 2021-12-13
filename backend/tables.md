@@ -4,7 +4,7 @@
 ```sql
 CREATE TABLE users (
     user_username varchar(45) NOT NULL PRIMARY KEY,
-    user_password varchar(45) NOT NULL,
+    user_password varchar(256) NOT NULL,
     user_role integer NOT NULL DEFAULT 0,
     user_money integer NOT NULL DEFAULT 0,
     user_firstname varchar(45) NOT NULL,

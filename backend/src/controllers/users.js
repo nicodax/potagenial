@@ -25,19 +25,16 @@ const logUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        console.log('avant crypto')
-        crypto.randomBytes(32, function(err, salt) {
-            if (err)throw err;
-            console.log('après crypto');
-            argon2i.hash(req.body.password, salt).then(hash => {
-                console.log(hash);
-                const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}' \
-                    AND user_password = '${hash}';`;
+        const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}';`;
 
-                database.query(sqlQuery, (err, result) => {
-                    if (err) { res.sendStatus(520); }
-                    else if (result.length == 0) { res.json(result); }
-                    else {
+        database.query(sqlQuery, (err, result) => {
+            if (err) { res.sendStatus(520); }
+            else if (result.length == 0) { res.json(result); }
+            else {
+                const password = new Buffer(req.body.password);
+                const passwordHash = result[0].user_password;
+                argon2i.verify(passwordHash, password).then(correct => {
+                    if (correct) {
                         const username = result[0].user_username;
                         const accessToken = authorization.generateAccessToken(username);
                         const refreshToken = authorization.generateRefreshToken(username);
@@ -58,9 +55,11 @@ const logUserIn = (req, res) => {
                         } catch (err) {
                             res.sendStatus(520);
                         }
+                    } else {
+                        res.sendStatus(400);
                     }
-                });
-            });
+                })
+            }
         });
     }
 };
@@ -69,12 +68,9 @@ const signUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        console.log('avant crypto');
         crypto.randomBytes(32, function(err, salt) {
-            if (err)throw err;
-            console.log('après crypto');
+            if (err) throw err;
             argon2i.hash(req.body.password, salt).then(hash => {
-                console.log(hash);
                 const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
                     user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES \
                     ('${req.body.username}', '${hash}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.email}', \
