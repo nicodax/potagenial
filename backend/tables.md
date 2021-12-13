@@ -60,7 +60,9 @@ CREATE TABLE sondes (
 CREATE TABLE cameras (
     camera_id integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
     camera_status varchar(45) NOT NULL,
-    camera_extra_info varchar(45) NOT NULL
+    camera_ip varchar(45) NOT NULL,
+    camera_username varchar(45) NOT NULL,
+    camera_password varchar(45) NOT NULL
 );
 ```
 
@@ -108,7 +110,8 @@ CREATE TABLE tokens (
 INSERT INTO emails (email_user, email_client, password_client) VALUES ("potagenial@gmail.com", "potagenial@gmail.com", "pot4geni4l**");
 INSERT INTO users (user_username, user_password, user_money, user_firstname, user_lastname, user_email, user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES ('potagenial', 'p0t4g3ni4l', 250, 'potagenial', 'pwdgenial', 'potagenial@students.ephec.be', '2021-10-02', 'X', 'Belgique', 'Louvain-la-Neuve', 'Avenue du Ciseau', 15, 1348);
 INSERT INTO products (product_name, product_price, product_description, product_stock) VALUES ('graines de tournesol', 1, 'graines pour planter des tournesols', 25);
-INSERT INTO cameras (camera_status, camera_extra_info) VALUES ('RUNNING', 'IPv4=X.Y.X.A');
+INSERT INTO cameras (camera_status, camera_ip, camera_username, camera_password) 
+VALUES ('RUNNING', '109.131.244.183:554', 'root', 'ipcam');
 INSERT INTO sondes (sonde_status, sonde_extra_info) VALUES ('RUNNING', 'IPv4=X.Y.X.B');
 ```
 

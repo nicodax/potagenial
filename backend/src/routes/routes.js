@@ -6,6 +6,7 @@ const users = require('../controllers/users');
 const settings = require('../controllers/settings');
 const help = require('../controllers/help');
 const authorization = require('../controllers/authorization');
+const cameras = require('../controllers/cameras');
 
 // ################################################################
 // USER ROUTES
@@ -140,5 +141,17 @@ router.post('/authorization/token',
     body('token').not().isEmpty().escape(),
     authorization.refreshAccessToken
 );
+
+// ################################################################
+// CAMERA ROUTES
+// ################################################################
+
+// [GET] authenticated
+router.get('/camera/:camera_id',
+    authorization.authenticateToken,
+    param('camera_id').not().isEmpty().escape(),
+    cameras.getCamera
+);
+
 
 module.exports = router;
