@@ -55,10 +55,12 @@ const logUserIn = (req, res) => {
                             } catch (err) {
                                 res.sendStatus(520);
                             }
+                        } else {
+                            res.sendStatus(400);
                         }
                     })
                 } catch (error) {
-                    res.sendStatus(400);
+                    res.sendStatus(520);
                 }
             }
         });
