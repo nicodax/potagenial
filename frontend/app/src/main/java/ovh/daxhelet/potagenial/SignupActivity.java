@@ -1,11 +1,14 @@
 package ovh.daxhelet.potagenial;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -13,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -32,6 +33,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText eConfirmPassword;
     private EditText eFirstname;
     private EditText eLastname;
+    private TextView eConditions;
+    private CheckBox eCheckBox;
 
 
     @Override
@@ -47,6 +50,16 @@ public class SignupActivity extends AppCompatActivity {
         eLastname = findViewById(R.id.etLastname);
         Button eSignup = findViewById(R.id.btnSignup);
         Button eToLogin = findViewById(R.id.btnToLogin);
+        eConditions = findViewById(R.id.tvConditions);
+        eCheckBox = findViewById(R.id.cbAccept);
+
+
+        eConditions.setOnClickListener(view -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.privacypolicies.com/live/64674c1b-519d-443f-9967-574825f9b3eb"));
+            startActivity(i);
+
+        });
+
 
         eSignup.setOnClickListener(v -> {
             String inputUsername = eUsername.getText().toString();
@@ -56,7 +69,11 @@ public class SignupActivity extends AppCompatActivity {
             String inputFirstname = eFirstname.getText().toString();
             String inputLastname = eLastname.getText().toString();
 
-            if(inputUsername.isEmpty() || inputEmail.isEmpty() || inputPassword.isEmpty() ||
+            if (!eCheckBox.isChecked()){
+                Toast.makeText(SignupActivity.this, "You have to read and accept " +
+                        "the app conditions", Toast.LENGTH_SHORT).show();
+            }
+            else if(inputUsername.isEmpty() || inputEmail.isEmpty() || inputPassword.isEmpty() ||
                     inputFirstname.isEmpty() || inputLastname.isEmpty()) {
                 Toast.makeText(SignupActivity.this, "Please enter all the details " +
                         "correctly!", Toast.LENGTH_SHORT).show();
