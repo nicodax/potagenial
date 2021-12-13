@@ -25,12 +25,11 @@ const logUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        
         crypto.randomBytes(32, function(err, salt) {
             if (err)throw err;
             argon2i.hash(req.body.password, salt).then(hash => {
                 const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}' \
-                    AND user_password = '${passwordHash}';`;
+                    AND user_password = '${hash}';`;
 
                 database.query(sqlQuery, (err, result) => {
                     if (err) { res.sendStatus(520); }
@@ -67,38 +66,41 @@ const signUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        
-
-        const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
-            user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES \
-            ('${req.body.username}', '${passwordHash}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.email}', \
-            '${req.body.birthdate}', '${req.body.sexe}', '${req.body.country}', '${req.body.city}', '${req.body.address}', \
-            ${req.body.house_number}, ${req.body.zipcode});`;
-        
-        try {
-            database.query(sqlQuery, (err, result) => {
-                if (err) { res.sendStatus(400); }
-                else {
-                    const username = req.body.username;
-                    const accessToken = authorization.generateAccessToken(username);
-                    const refreshToken = authorization.generateRefreshToken(username);
-            
-                    const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-            
-                    database.query(sqlQuery, (err, result) => { if (err) res.sendStatus(520); });
-            
-                    if(!result) { res.json(result); }
-                    else {
-                        res.json({
-                            accessToken: accessToken,
-                            refreshToken: refreshToken
-                        });
-                    }
+        crypto.randomBytes(32, function(err, salt) {
+            if (err)throw err;
+            argon2i.hash(req.body.password, salt).then(hash => {
+                const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
+                    user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES \
+                    ('${req.body.username}', '${hash}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.email}', \
+                    '${req.body.birthdate}', '${req.body.sexe}', '${req.body.country}', '${req.body.city}', '${req.body.address}', \
+                    ${req.body.house_number}, ${req.body.zipcode});`;
+                
+                try {
+                    database.query(sqlQuery, (err, result) => {
+                        if (err) { res.sendStatus(400); }
+                        else {
+                            const username = req.body.username;
+                            const accessToken = authorization.generateAccessToken(username);
+                            const refreshToken = authorization.generateRefreshToken(username);
+                    
+                            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
+                    
+                            database.query(sqlQuery, (err, result) => { if (err) res.sendStatus(520); });
+                    
+                            if(!result) { res.json(result); }
+                            else {
+                                res.json({
+                                    accessToken: accessToken,
+                                    refreshToken: refreshToken
+                                });
+                            }
+                        }
+                    }); 
+                } catch (err) {
+                    res.sendStatus(520);
                 }
-            }); 
-        } catch (err) {
-            res.sendStatus(520);
-        }
+            });
+        });
     }
 };
 
