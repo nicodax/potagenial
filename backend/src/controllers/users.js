@@ -3,7 +3,8 @@ const { validationResult } = require('express-validator');
 const database = require('../db');
 const authorization = require('../controllers/authorization');
 
-const argon2 = require('argon2');
+const argon2i = require('argon2-ffi').argon2i;
+crypto = require('crypto');
 
 const getUser = (req, res) => {
     const errors = validationResult(req);
@@ -20,53 +21,53 @@ const getUser = (req, res) => {
     }
 };
 
-async function logUserIn(req, res) {
+const logUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        try {
-            const passwordHash = argon2.hash(req.body.password);
-        } catch (err) { res.sendStatus(520); }
         
-        const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}' \
-            AND user_password = '${passwordHash}';`;
+        crypto.randomBytes(32, function(err, salt) {
+            if (err)throw err;
+            argon2i.hash(req.body.password, salt).then(hash => {
+                const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}' \
+                    AND user_password = '${passwordHash}';`;
 
-        database.query(sqlQuery, (err, result) => {
-            if (err) { res.sendStatus(520); }
-            else if (result.length == 0) { res.json(result); }
-            else {
-                const username = result[0].user_username;
-                const accessToken = authorization.generateAccessToken(username);
-                const refreshToken = authorization.generateRefreshToken(username);
-                
-                const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-                
-                try {
-                    database.query(sqlQuery, (err, result) => {
-                        if (err) { res.sendStatus(520); }
-                        else {
-                            res.json([{ 
-                                user_username: username,
-                                accessToken: accessToken,
-                                refreshToken: refreshToken
-                            }]);
+                database.query(sqlQuery, (err, result) => {
+                    if (err) { res.sendStatus(520); }
+                    else if (result.length == 0) { res.json(result); }
+                    else {
+                        const username = result[0].user_username;
+                        const accessToken = authorization.generateAccessToken(username);
+                        const refreshToken = authorization.generateRefreshToken(username);
+                        
+                        const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
+                        
+                        try {
+                            database.query(sqlQuery, (err, result) => {
+                                if (err) { res.sendStatus(520); }
+                                else {
+                                    res.json([{ 
+                                        user_username: username,
+                                        accessToken: accessToken,
+                                        refreshToken: refreshToken
+                                    }]);
+                                }
+                            });
+                        } catch (err) {
+                            res.sendStatus(520);
                         }
-                    });
-                } catch (err) {
-                    res.sendStatus(520);
-                }
-            }
+                    }
+                });
+            });
         });
     }
 };
 
-async function signUserIn(req, res) {
+const signUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        try {
-            const passwordHash = argon2.hash(req.body.password);
-        } catch (err) { res.sendStatus(520); }
+        
 
         const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
             user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES \
