@@ -32,6 +32,7 @@ const logUserIn = (req, res) => {
             else if (result.length == 0) { res.json(result); }
             else {
                 const passwordHash = result[0].user_password;
+                console.log(passwordHash);
                 argon2i.verify(passwordHash, req.body.password).then(correct => {
                     if (correct) {
                         const username = result[0].user_username;
