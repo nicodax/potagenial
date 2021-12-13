@@ -69,9 +69,12 @@ const signUserIn = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
+        console.log('avant crypto');
         crypto.randomBytes(32, function(err, salt) {
             if (err)throw err;
+            console.log('après crypto');
             argon2i.hash(req.body.password, salt).then(hash => {
+                console.log(hash);
                 const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
                     user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES \
                     ('${req.body.username}', '${hash}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.email}', \
@@ -80,7 +83,10 @@ const signUserIn = (req, res) => {
                 
                 try {
                     database.query(sqlQuery, (err, result) => {
-                        if (err) { res.sendStatus(400); }
+                        if (err) { 
+                            res.sendStatus(400); 
+                            console.log(err);
+                        }
                         else {
                             const username = req.body.username;
                             const accessToken = authorization.generateAccessToken(username);
