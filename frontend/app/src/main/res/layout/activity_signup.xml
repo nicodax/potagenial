@@ -14,7 +14,6 @@
         android:ems="10"
         android:hint="@string/enter_username_prompt"
         android:inputType="textPersonName"
-        android:text="potagenial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +26,6 @@
         android:ems="10"
         android:hint="@string/enter_password_prompt"
         android:inputType="textPassword"
-        android:text="P0t4g3ni4l*"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSignupEmail" />
@@ -40,7 +38,6 @@
         android:ems="10"
         android:hint="@string/confirm_password_prompt"
         android:inputType="textPassword"
-        android:text="P0t4g3ni4l*"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +51,6 @@
         android:ems="10"
         android:hint="@string/enter_email_prompt"
         android:inputType="textEmailAddress"
-        android:text="potagenial@ephec.be"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSignupUsername" />
@@ -77,7 +73,6 @@
         android:ems="10"
         android:hint="@string/enter_firstname_prompt"
         android:inputType="textPersonName"
-        android:text="Potage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSignupConfirmPassword" />
@@ -90,7 +85,6 @@
         android:ems="10"
         android:hint="@string/enter_lastname_prompt"
         android:inputType="textPersonName"
-        android:text="Nial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etFirstname" />
