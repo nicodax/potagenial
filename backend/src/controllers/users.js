@@ -25,7 +25,7 @@ const logUserIn = (req, res) => {
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
         try {
-            const passwordHash = await argon2.hash(req.body.password);
+            const passwordHash = argon2.hash(req.body.password);
         } catch (err) { res.sendStatus(520); }
         
         const sqlQuery = `SELECT user_username FROM users WHERE user_username = '${req.body.username}' \
@@ -65,7 +65,7 @@ const signUserIn = (req, res) => {
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
         try {
-            const passwordHash = await argon2.hash(req.body.password);
+            const passwordHash = argon2.hash(req.body.password);
         } catch (err) { res.sendStatus(520); }
 
         const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
