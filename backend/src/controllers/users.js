@@ -20,7 +20,7 @@ const getUser = (req, res) => {
     }
 };
 
-const logUserIn = (req, res) => {
+async function logUserIn(req, res) {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
@@ -60,7 +60,7 @@ const logUserIn = (req, res) => {
     }
 };
 
-const signUserIn = (req, res) => {
+async function signUserIn(req, res) {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
