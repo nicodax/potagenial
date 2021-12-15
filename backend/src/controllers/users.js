@@ -82,10 +82,7 @@ const signUserIn = (req, res) => {
                 
                 try {
                     database.query(sqlQuery, (err, result) => {
-                        if (err) { 
-                            res.sendStatus(400); 
-                            console.log(err);
-                        }
+                        if (err) { res.sendStatus(400); }
                         else {
                             const username = req.body.username;
                             const accessToken = authorization.generateAccessToken(username);

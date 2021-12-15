@@ -44,7 +44,7 @@ const refreshAccessToken = (req, res) => {
 
         database.query(sqlQuery, (err, result) => {
             if (err) { res.sendStatus(500); }
-            if (!result) { res.sendStatus(403); }
+            if (result.length == 0) { res.sendStatus(403); }
         });
     
         jwt.verify(req.body.token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {

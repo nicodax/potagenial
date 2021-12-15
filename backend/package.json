@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "devStart": "nodemon devIndex.js"
+    "devStart": "nodemon devIndex.js",
+    "test": "nyc --reporter=text mocha"
   },
   "keywords": [],
   "author": "",

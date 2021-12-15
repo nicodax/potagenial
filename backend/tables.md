@@ -106,6 +106,11 @@ CREATE TABLE tokens (
 ```
 
 # Insertion des données relatives à un utilisateur placeholder et de son matériel
+Juste pour localhost!
+```sql
+INSERT INTO users (user_username, user_password, user_money, user_firstname, user_lastname, user_email, user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES ('potagenial', '$argon2i$v=19$m=4096,t=3,p=1$eyLwEPrWS7cBMXHl/M582uq4r83MXDKWF8hdNNmKDSI$aX8fhC83AT4glZKWSFBAcOR1xdJLsyGainqr7URc260', 250, 'potagenial', 'pwdgenial', 'potagenial@students.ephec.be', '2021-10-02', 'X', 'Belgique', 'Louvain-la-Neuve', 'Avenue du Ciseau', 15, 1348);
+```
+
 ```sql
 INSERT INTO emails (email_user, email_client, password_client) VALUES ("potagenial@gmail.com", "potagenial@gmail.com", "pot4geni4l**");
 INSERT INTO products (product_name, product_price, product_description, product_stock) VALUES ('graines de tournesol', 1, 'graines pour planter des tournesols', 25);
