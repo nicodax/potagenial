@@ -2,14 +2,8 @@ package ovh.daxhelet.potagenial;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,9 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         // id du mail
 
-
-
-
+        
         eDashboard = findViewById(R.id.tvDashboardText);
 
         // ajouter l'action qui dirige vers la page d'aide quand on appui l'image
