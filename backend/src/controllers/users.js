@@ -126,11 +126,16 @@ const amendPwd = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        const sqlQuery = `UPDATE users SET user_password = '${req.body.password}' where user_username = '${req.body.username}';`;
+        crypto.randomBytes(32, function(err, salt) {
+            if (err) throw err;
+            argon2i.hash(req.body.password, salt).then(hash => {
+                const sqlQuery = `UPDATE users SET user_password = '${hash}' where user_username = '${req.body.username}';`;
 
-        database.query(sqlQuery, (err, result) => {
-            if (err) { res.sendStatus(400); }
-            else { res.json(result); }
+                database.query(sqlQuery, (err, result) => {
+                    if (err) { res.sendStatus(400); }
+                    else { res.json(result); }
+                });
+            });
         });
     }
 };
