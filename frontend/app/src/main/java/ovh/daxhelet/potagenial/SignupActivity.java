@@ -34,6 +34,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText eFirstname;
     private EditText eLastname;
     private TextView eConditions;
+    private TextView ePolitique;
     private CheckBox eCheckBox;
 
 
@@ -51,6 +52,7 @@ public class SignupActivity extends AppCompatActivity {
         Button eSignup = findViewById(R.id.btnSignup);
         Button eToLogin = findViewById(R.id.btnToLogin);
         eConditions = findViewById(R.id.tvConditions);
+        ePolitique = findViewById(R.id.tvPolitique);
         eCheckBox = findViewById(R.id.cbAccept);
 
 
@@ -59,6 +61,14 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(i);
 
         });
+
+        ePolitique.setOnClickListener(view -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.privacypolicies.com/live/035980b0-0c72-490c-b4b8-88f78f1cbcfb"));
+            startActivity(i);
+
+        });
+
+
 
 
         eSignup.setOnClickListener(v -> {
