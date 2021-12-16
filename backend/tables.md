@@ -117,6 +117,7 @@ INSERT INTO products (product_name, product_price, product_description, product_
 INSERT INTO cameras (camera_status, camera_ip, camera_username, camera_password) 
 VALUES ('RUNNING', '109.131.244.183:554', 'root', 'ipcam');
 INSERT INTO sondes (sonde_status, sonde_extra_info) VALUES ('RUNNING', 'IPv4=X.Y.X.B');
+INSERT INTO tokens (token) VALUES ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjpbeyJ1c2VyX3VzZXJuYW1lIjoicG90YWdlbmlhbCJ9XSwiaWF0IjoxNjM5MTc4OTM1fQ.EGX0nJoFTBXQA0AcQfGB_S3_rx3ihU2TO_bhzsERSlE');
 ```
 
 ```sql
