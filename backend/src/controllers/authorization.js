@@ -32,6 +32,20 @@ const authenticateToken = (req, res, next) => {
     })
 }
 
+const authenticateRefreshToken = (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.array().length > 0) { res.send(errors.array()); }
+    else {
+        const token = req.body.refreshToken || req.body.token;
+        jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if (err) { return res.sendStatus(403); }
+    
+            req.user = user;
+            next()
+        });
+    }
+}
+
 const authenticated = (req, res) => {
     res.json({"authenticated": true});
 }
@@ -40,7 +54,7 @@ const refreshAccessToken = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        const sqlQuery = `SELECT * FROM tokens WHERE token = '${req.body.token}';`;
+        const sqlQuery = `SELECT token FROM tokens WHERE user_username = '${req.user.name}';`;
 
         database.query(sqlQuery, (err, result) => {
             if (err) { res.sendStatus(500); }
@@ -64,5 +78,6 @@ module.exports = {
     authenticated,
     refreshAccessToken,
     generateAccessToken,
-    generateRefreshToken
+    generateRefreshToken,
+    authenticateRefreshToken
 }

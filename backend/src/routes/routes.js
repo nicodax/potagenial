@@ -45,6 +45,7 @@ router.post('/user',
 // [POST] log user out
 router.post('/user/logout',
     body('refreshToken').not().isEmpty().escape(),
+    authorization.authenticateRefreshToken,
     users.logUserOut
 );
 
@@ -139,6 +140,7 @@ router.get('/authorization/authenticated',
 // [POST] refresh access token
 router.post('/authorization/token',
     body('token').not().isEmpty().escape(),
+    authorization.authenticateRefreshToken,
     authorization.refreshAccessToken
 );
 

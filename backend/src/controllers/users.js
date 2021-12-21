@@ -38,23 +38,28 @@ const logUserIn = (req, res) => {
                             const username = result[0].user_username;
                             const accessToken = authorization.generateAccessToken(username);
                             const refreshToken = authorization.generateRefreshToken(username);
+
+                            crypto.randomBytes(32, function(err, salt) {
+                                if (err) throw err;
+                                argon2i.hash(refreshToken, salt).then(hash => {
+                                    const sqlQuery = `INSERT INTO tokens (token, user_username) VALUES ('${hash}', '${username}');`;
                             
-                            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-                            
-                            try {
-                                database.query(sqlQuery, (err, result) => {
-                                    if (err) { res.sendStatus(520); }
-                                    else {
-                                        res.json([{ 
-                                            user_username: username,
-                                            accessToken: accessToken,
-                                            refreshToken: refreshToken
-                                        }]);
+                                    try {
+                                        database.query(sqlQuery, (err, result) => {
+                                            if (err) { res.sendStatus(520); }
+                                            else {
+                                                res.json([{ 
+                                                    user_username: username,
+                                                    accessToken: accessToken,
+                                                    refreshToken: refreshToken
+                                                }]);
+                                            }
+                                        });
+                                    } catch (err) {
+                                        res.sendStatus(520);
                                     }
                                 });
-                            } catch (err) {
-                                res.sendStatus(520);
-                            }
+                            });
                         } else {
                             res.sendStatus(400);
                         }
@@ -87,18 +92,28 @@ const signUserIn = (req, res) => {
                             const username = req.body.username;
                             const accessToken = authorization.generateAccessToken(username);
                             const refreshToken = authorization.generateRefreshToken(username);
-                    
-                            const sqlQuery = `INSERT INTO tokens (token) VALUES ('${refreshToken}');`;
-                    
-                            database.query(sqlQuery, (err, result) => { if (err) res.sendStatus(520); });
-                    
-                            if(!result) { res.json(result); }
-                            else {
-                                res.json({
-                                    accessToken: accessToken,
-                                    refreshToken: refreshToken
+
+                            crypto.randomBytes(32, function(err, salt) {
+                                if (err) throw err;
+                                argon2i.hash(refreshToken, salt).then(hash => {
+                                    const sqlQuery = `INSERT INTO tokens (token, user_username) VALUES ('${hash}', '${username}');`;
+                            
+                                    try {
+                                        database.query(sqlQuery, (err, result) => {
+                                            if (err) { res.sendStatus(520); }
+                                            else if(!result) { res.json(result); }
+                                            else {
+                                                res.json({
+                                                    accessToken: accessToken,
+                                                    refreshToken: refreshToken
+                                                });
+                                            }
+                                        });
+                                    } catch (err) {
+                                        res.sendStatus(520);
+                                    }
                                 });
-                            }
+                            });
                         }
                     }); 
                 } catch (err) {
@@ -110,16 +125,31 @@ const signUserIn = (req, res) => {
 };
 
 const logUserOut = (req, res) => {
-    const errors = validationResult(req);
-    if (errors.array().length > 0) { res.send(errors.array()); }
-    else {
-        const sqlQuery = `DELETE FROM tokens WHERE token = '${req.body.refreshToken}';`;
+    const sqlQuery = `SELECT token FROM tokens WHERE user_username = '${req.user.name}';`;
 
-        database.query(sqlQuery, (err, result) => {
-            if (err) { res.sendStatus(520); }
-            else { res.json({ "msg": "logged out" }); }
-        });
-    }
+    database.query(sqlQuery, (err, result) => {
+        if (err) { res.sendStatus(520); }
+        else if (result.length == 0) { res.json(result); }
+        else {
+            const tokenHash = result[0].token;
+            try {
+                argon2i.verify(tokenHash, req.body.refreshToken).then(correct => {
+                    if (correct) {
+                        const sqlQuery = `DELETE FROM tokens WHERE token = '${tokenHash}';`;
+
+                        database.query(sqlQuery, (err, result) => {
+                            if (err) { res.sendStatus(520); }
+                            else { res.json({ "msg": "logged out" }); }
+                        });
+                    } else {
+                        res.sendStatus(400);
+                    }
+                })
+            } catch (error) {
+                res.sendStatus(520);
+            }
+        }
+    });
 };
 
 const amendPwd = (req, res) => {

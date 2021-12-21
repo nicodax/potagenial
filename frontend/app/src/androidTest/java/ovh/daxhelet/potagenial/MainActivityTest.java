@@ -21,7 +21,7 @@ import org.junit.Test;
 //import android.app.Activity;
 //import android.app.Instrumentation;
 
-public class MainActivityTest {
+public class    MainActivityTest {
 
     @Rule
     //Création d'une règle pour lancer notre activity

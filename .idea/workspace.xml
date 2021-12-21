@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3c64ad59-cff1-4032-8433-c4f5afdc1f97" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/.idea/deploymentTargetDropDown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/controllers/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/androidTest/java/ovh/daxhelet/potagenial/MainActivityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/androidTest/java/ovh/daxhelet/potagenial/MainActivityTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +24,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/frontend" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
