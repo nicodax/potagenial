@@ -9,14 +9,20 @@ const getUserSettings = (req, res) => {
         const sqlQuery = `SELECT user_username, camera_id, sonde_id, settings_temperature_outside, settings_temperature_ground, \
             settings_humidity, (SELECT DATE_FORMAT(settings_last_sprinkling, '%d-%m-%Y')) AS settings_last_sprinkling, \
             settings_last_sprinkling_quantity, settings_automatic_sprinkling, settings_automatic_sprinkling_frequency FROM settings \
-            WHERE user_username = '${req.params.username}';`;
-
-        database.query(sqlQuery, (err, result) => {
-            if (err) { res.sendStatus(520); }
-            else { res.json(result); }
-        });
+            WHERE user_username = ?;`;
+            
+        if(req.params.username.match(/^[0-9a-zA-Z]+$/)) {
+        	database.query(sqlQuery, [req.params.username], (err, result) => {
+		    if (err) { res.sendStatus(520); }
+		    else { res.json(result); }
+		});
+        }
+        else {
+        	res.sendStatus(400);
+        }
     }
 };
+
 
 const postUserSettings = (req, res) => {
     const errors = validationResult(req);
