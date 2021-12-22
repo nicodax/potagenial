@@ -28,14 +28,19 @@ const postUserSettings = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) res.send(errors.array());
     else {
-        const sqlQuery = `UPDATE settings SET settings_automatic_sprinkling = '${req.body.automatic_sprinkling}', \
-            settings_automatic_sprinkling_frequency = '${req.body.automatic_sprinkling_frequency}' WHERE \
-            user_username = '${req.params.username}';`;
-
-        database.query(sqlQuery, (err, result) => {
-            if (err) { res.sendStatus(400); }
-            else { res.json(result); }
-        });
+        const sqlQuery = `UPDATE settings SET settings_automatic_sprinkling = ?, \
+            settings_automatic_sprinkling_frequency = ? WHERE \
+            user_username = ?;`;
+        if(req.params.username.match(/^[0-9a-zA-Z]+$/) && req.body.automatic_sprinkling.match(/^[0-9a-zA-Z]+$/) && req.body.automatic_sprinkling_frequency.match(/^[0-9a-zA-Z]+$/)) {
+                database.query(sqlQuery,[req.body.automatic_sprinkling, req.body.automatic_sprinkling_frequency, req.params.username], (err, result) => {
+            
+                    if (err) { res.sendStatus(400); }
+                    else { res.json(result); }
+                })
+        }
+        else {
+        	res.sendStatus(400);
+        }
     }
 };
 
