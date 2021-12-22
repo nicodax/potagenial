@@ -48,18 +48,35 @@ const postSondeSettings = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        const sqlQuery = `UPDATE settings SET settings_temperature_outside = '${req.body.settings_temperature_outside}', \
-            settings_temperature_ground = '${req.body.settings_temperature_ground}', settings_humidity = '${req.body.settings_humidity}', \
-            settings_last_sprinkling = (SELECT STR_TO_DATE('${req.body.settings_last_sprinkling}', '%d-%m-%Y')), \
-            settings_last_sprinkling_quantity = '${req.body.settings_last_sprinkling_quantity}' WHERE sonde_id = '${req.params.sonde_id}';`;
+        const sqlQuery = `UPDATE settings SET settings_temperature_outside = ?, \
+            settings_temperature_ground = ?, settings_humidity = ?, \
+            settings_last_sprinkling = (SELECT STR_TO_DATE(?, '%d-%m-%Y')), \
+            settings_last_sprinkling_quantity = ? WHERE sonde_id = ?;`;
+        
+        if(req.body.settings_temperature_outside.match(/^[0-9a-zA-Z]+$/) &&
+            req.body.settings_temperature_ground.match(/^[0-9a-zA-Z]+$/) && 
+            req.body.settings_humidity.match(/^[0-9a-zA-Z]+$/) && 
+            req.body.settings_last_sprinkling.match(/^[0-9a-zA-Z]+$/) &&
+            req.body.settings_last_sprinkling_quantity.match(/^[0-9a-zA-Z]+$/) && 
+            req.params.sonde_id.match(/^[0-9a-zA-Z]+$/)){
 
-        database.query(sqlQuery, (err, result) => {
-            if (err) { res.sendStatus(400); }
-            else { res.json(result); }
-        });
+                database.query(sqlQuery,[req.body.settings_temperature_outside, 
+                    req.body.settings_temperature_ground, 
+                    req.body.settings_humidity, 
+                    req.body.settings_last_sprinkling, 
+                    req.body.settings_last_sprinkling_quantity, 
+                    req.params.sonde_id], (err, result) => {
+            
+                    if (err) { res.sendStatus(400); }
+                    else { res.json(result); }
+                });
+
+        }else{
+            res.sendStatus(400);
+        }
+
     }
 };
-
 
 module.exports = {
     getUserSettings,
