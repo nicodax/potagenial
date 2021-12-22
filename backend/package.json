@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "devStart": "nodemon devIndex.js",
+    "test": "nyc --reporter=text mocha"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,11 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "argon2-ffi": "^2.0.0",
+    "nodemon": "^2.0.15"
   }
 }

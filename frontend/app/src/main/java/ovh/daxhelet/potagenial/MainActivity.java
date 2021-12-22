@@ -2,13 +2,24 @@ package ovh.daxhelet.potagenial;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,9 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         // id du mail
 
-
-
-
+        
         eDashboard = findViewById(R.id.tvDashboardText);
 
         // ajouter l'action qui dirige vers la page d'aide quand on appui l'image
@@ -131,22 +140,112 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(!authenticate()) {
-            Intent login = new Intent(MainActivity.this,
-                    LoginActivity.class);
-            startActivity(login);
-        }
+        volleyAuthenticated();
     }
 
-    private boolean authenticate() {
+    public void volleyAuthenticated(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
         UserLocalStore userLocalStore = new UserLocalStore(this);
-        return userLocalStore.getUserLoggedIn();
+        User user = userLocalStore.getLoggedInUser();
+        String url = "https://daxhelet.ovh:3535/authorization/authenticated";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    userLocalStore.setUserLoggedIn(response.getBoolean("authenticated"));
+                } catch (JSONException e) {
+                    userLocalStore.setUserLoggedIn(false);
+                    volleyRefreshToken();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLocalStore.setUserLoggedIn(false);
+                volleyRefreshToken();
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer " + user.access_token);
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void volleyRefreshToken(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+        String url = "https://daxhelet.ovh:3535/authorization/token";
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("token", user.refresh_token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    userLocalStore.setAccessToken(response.getString("accessToken"));
+                } catch (JSONException e) {
+                    userLocalStore.setUserLoggedIn(false);
+                    Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(login);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLocalStore.setUserLoggedIn(false);
+                Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(login);
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
     }
 
     private void logOut() {
+        volleyLogout();
         UserLocalStore userLocalStore = new UserLocalStore(this);
         userLocalStore.clearUserData();
         userLocalStore.setUserLoggedIn(false);
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+    }
+
+    public void volleyLogout(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        UserLocalStore userLocalStore = new UserLocalStore(this);
+        User user = userLocalStore.getLoggedInUser();
+        String url = "https://daxhelet.ovh:3535/user/logout";
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("refreshToken", user.refresh_token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {}
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+
+        requestQueue.add(jsonObjectRequest);
     }
 }

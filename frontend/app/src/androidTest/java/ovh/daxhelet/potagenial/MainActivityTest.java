@@ -1,35 +1,92 @@
 package ovh.daxhelet.potagenial;
 
-import static org.junit.Assert.*;
+//import static androidx.test.espresso.Espresso.onView;
+//import static androidx.test.espresso.action.ViewActions.click;
+//import static androidx.test.espresso.matcher.ViewMatchers.withId;
+//import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.assertNotNull;
 
+import android.app.Instrumentation;
 import android.view.View;
+
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class MainActivityTest {
+//import android.app.Activity;
+//import android.app.Instrumentation;
+
+public class    MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule=new ActivityTestRule<MainActivity>(MainActivity.class);
-    private MainActivity mActivity = null;
+    //Création d'une règle pour lancer notre activity
+    public ActivityTestRule<MainActivity>mainActivityActivityTestRule=new ActivityTestRule<MainActivity>(MainActivity.class);
+    private MainActivity mainActivity = null;
+
+    public IntentsTestRule<MainActivity> intentsTestRule=new IntentsTestRule<>(MainActivity.class);
+
+    Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(AideActivity.class.getName(), null, false);
 
     @Before
     public void setUp() throws Exception {
-        mActivity = mActivityTestRule.getActivity();
+        mainActivity = mainActivityActivityTestRule.getActivity();
     }
 
     @Test
-    public void testLaunch(){
-        View view = mActivity.findViewById(R.id.ivLogo);
-        assertNotNull(view);
-
+    public void testLaunchLogo(){
+        View logo = mainActivity.findViewById(R.id.ivLogo);
+        assertNotNull(logo);
+        //Espresso.onView(withId(R.id.ivLogo)).perform(ViewAction);
 
     }
+    @Test
+    public void testLaunchAide(){
+        View aide = mainActivity.findViewById(R.id.ivAide);
+        assertNotNull(aide);
+        //onView(ViewMatchers.withId(R.id.ivAide)).perform(click());
+        //intended(hasComponent(AideActivity.class.getName()));
+        //Activity aideActivity = getInstrumentation().waitForMonitorWithTimeout(monitor, 1000);
+
+        //aideActivity.finish();
+    }
+
+    @Test
+    public void testLaunchCamera(){
+        View camera = mainActivity.findViewById(R.id.ivCamera);
+        assertNotNull(camera);
+    }
+    @Test
+    public void testLaunchService(){
+        View service = mainActivity.findViewById(R.id.ivServices);
+        assertNotNull(service);
+    }
+
+    @Test
+    public void testLaunchPanier(){
+        View panier = mainActivity.findViewById(R.id.ivPanier);
+        assertNotNull(panier);
+    }
+
+    @Test
+    public void testLaunchProfil(){
+        View profil = mainActivity.findViewById(R.id.ivProfil);
+        assertNotNull(profil);
+    }
+
+    @Test
+    public void testLaunchParametres(){
+        View parametres = mainActivity.findViewById(R.id.ivParametres);
+        assertNotNull(parametres);
+    }
+
 
     @After
     public void tearDown() throws Exception {
-        mActivity=null;
+        mainActivity = null;
     }
 }

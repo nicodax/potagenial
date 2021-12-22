@@ -1,5 +1,6 @@
 package ovh.daxhelet.potagenial;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -11,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
 
@@ -39,5 +42,11 @@ public class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
         } catch (UnsupportedEncodingException | JSONException e) {
             return Response.error(new ParseError(e));
         }
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        HashMap<String, String> headers = new HashMap<String, String>();
+        return headers;
     }
 }
