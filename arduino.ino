@@ -18,8 +18,8 @@ int pin2 = 2;
 int vhum = 0;
 int vtemp = 0;
 
-long int pwd1 = 92;// light on
-long int pwd2 = 79; // light off
+long int pwd1 = 1;//  on
+long int pwd2 = 0; // off
 char state = 0;
 
 void setup() {
@@ -36,16 +36,20 @@ dht.begin();
 
 
 void loop() {
-vhum = analogRead(4);
-vtemp =analogRead(pin2);
+vhum = analogRead(capteuranalogique);
+vtemp =analogRead(DHTPIN);
 
-
-Bluetooth.print("L'humidité du sol est de :");
-Bluetooth.println(vhum);
-Bluetooth.println("************************");
-Bluetooth.println("La tempérture de la piece est:");
-Bluetooth.println("vtemp");
-Bluetooth.println("************************");
+while(Bluetooth.available()== 0){
+    Bluetooth.print("L'humidité du sol est de :");
+    Bluetooth.println(vhum);
+    Bluetooth.println("************************");
+    Bluetooth.println("La tempérture de la piece est:");
+    Bluetooth.println(getTemp("c"));
+    Bluetooth.println("************************");
+    Bluetooth.println("L'humidité de la pice est");
+    Bluetooth.println(getTemp("h"));
+    Bluetooth.println("************************");
+}
 while(Bluetooth.available()==0) ;
  
  if(Bluetooth.available()>0) // si le bluetooth reçois une valeur supérieur à zéro
@@ -56,7 +60,7 @@ donnees = Bluetooth.parseInt();
 
 delay(100);
 
-Serial.print(donnees);
+Serial.println(donnees);
  
 if(donnees == pwd1)
 {
@@ -64,17 +68,18 @@ if(donnees == pwd1)
   digitalWrite(4,HIGH);
   Serial.println("Arrosage activé");/********************************************* affiché plt grace au bth 'debut de l'arrosage'*/
 
-Serial.println(" SOL PAS ASSEZ HUMIDE - ACTIVATION ARROSAGE ");
+Bluetooth.println(" SOL PAS ASSEZ HUMIDE - ACTIVATION ARROSAGE ");
+Bluetooth.println("Debut de l'arrosage");
   for(int arrosage = 1 ; arrosage <= 10 ; arrosage = arrosage+1) // cycle maxi de 10 tests + arrosage pour permettre que l'eau ait le temps de s'infiltrer dans le sol
      {
      sensorValue1 = analogRead(capteuranalogique); 
      if (sensorValue1 > 90) {
-        Serial.print(arrosage);
-        Serial.print(" arrosage ");
-        Serial.print(" ; ");
-        Serial.println(sensorValue1);
+        Bluetooth.print(arrosage);
+        Bluetooth.print(" arrosage ");
+        Bluetooth.print(" ; ");
+        Bluetooth.println(sensorValue1);
         digitalWrite(pin8, HIGH); 
-        delay(2000); // durée fixe activation pompe
+        delay(500); // durée fixe activation pompe
         digitalWrite(pin8, LOW); 
         delay(5000); // pause pompe pour laisser a l'eau le tps de pénétrer la terre  
         }
@@ -86,8 +91,9 @@ if(donnees == pwd2)
   {
 
     digitalWrite(pin8, LOW);
-    digitalWrite(4, HIGH);
+    digitalWrite(4, LOW);
     Serial.println("fin de l'arrosage");
+    Bluetooth.println("Debut de l'arrosage");
 
   }
  
@@ -103,22 +109,22 @@ digitalWrite(4, HIGH); // met la sonde sous tension
 delay(10);
 sensorValue1 = analogRead(capteuranalogique); // mesure humidité
 sensorValue2 = analogRead(capteurnumerique);
+Bluetooth.print("**********************");
+Bluetooth.println("Temperature de la piece: ");
+Bluetooth.print(getTemp("c"));
+Bluetooth.print(" *C ");
+Bluetooth.println("**********************");
+Bluetooth.println("Humidité de la piece: ");
+Bluetooth.print(getTemp("h"));
+Bluetooth.print(" % ");
+Bluetooth.println("**********************");
 
-Serial.print("Temperature de la piece: ");
-  
-Serial.print(getTemp("c"));
-Serial.print(" *C ");
-Serial.print("Humidité de la piece: ");
-Serial.print(getTemp("h"));
-Serial.println(" % ");
-
-Serial.print(maxi);
-Serial.print(" ; ");
-Serial.print(mini);
-Serial.print("  ;  VALEUR ANALOGIQUE = ");
-Serial.print(sensorValue1);
-Serial.print("  ; VALEUR NUMERIQUE = " );
-Serial.println(sensorValue2);
+Bluetooth.println("  ;  VALEUR ANALOGIQUE = ");
+Bluetooth.print(sensorValue1);
+Bluetooth.println("**********************");
+Bluetooth.println("  ; VALEUR NUMERIQUE = " );
+Bluetooth.println(sensorValue2);
+Bluetooth.println("**********************");
 
 // si sensorValue1 est supérieur au seuil sec
 
@@ -134,7 +140,7 @@ float getTemp(String req)
   float t = dht.readTemperature();
   float hic = dht.computeHeatIndex(t, h, false);
   if (isnan(h) || isnan(t) ) {
-    Serial.println("Failed to read from DHT sensor!");
+    Serial.println("Erreur de lecture du capteur DHT!");
     return;
   }
   
