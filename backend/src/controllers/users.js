@@ -89,26 +89,27 @@ const signUserIn = (req, res) => {
             argon2i.hash(req.body.password, salt).then(hash => {
 
                 if(req.body.username.match(/^[0-9a-zA-Z]+$/) &&
-                    hash,req.body.firstname.match(/^[0-9a-zA-Z]+$/) && 
-                    req.body.lastname.match(/^[0-9a-zA-Z]+$/) &&
-                    req.body.email.match(/^[0-9a-zA-Z]+$/) &&
-                    req.body.birthdate.match(/^[0-9a-zA-Z]+$/) &&
+                    hash,req.body.firstname.match(/^[0-9a-zA-Z\- ]+$/) && 
+                    req.body.lastname.match(/^[0-9a-zA-Z\- ]+$/) &&
+                    req.body.email.match(/^[a-zA-Z0-9._-]+@[a-z]+\.+[a-z]+$/) &&
+                    req.body.birthdate.match(/^[0-9a-zA-Z\-]+$/) &&
                     req.body.sexe.match(/^[0-9a-zA-Z]+$/) &&
                     req.body.country.match(/^[0-9a-zA-Z]+$/) &&
-                    req.body.city.match(/^[0-9a-zA-Z]+$/) &&
-                    req.body.address.match(/^[0-9a-zA-Z]+$/) &&
+                    req.body.city.match(/^[0-9a-zA-Z\- ]+$/) &&
+                    req.body.address.match(/^[0-9a-zA-Z\- ]+$/) &&
                     req.body.house_number.match(/^[0-9a-zA-Z]+$/) &&
                     req.body.zipcode.match(/^[0-9a-zA-Z]+$/)){
 
                     const sqlQuery = `INSERT INTO users (user_username, user_password, user_firstname, user_lastname, user_email, \
                         user_birthdate, user_sexe, user_country, user_city, user_address, user_house_number, user_zipcode) VALUES \
                         (?, ?, ?, ?, ?, \
-                        ?, ?, ?, ?, '?, \
+                        ?, ?, ?, ?, ?, \
                         ?, ?);`;
                     
                     try {
                         database.query(sqlQuery,[req.body.username,
-                                                 hash,req.body.firstname, 
+                                                 hash,
+                                                 req.body.firstname, 
                                                  req.body.lastname,
                                                  req.body.email,
                                                  req.body.birthdate,
@@ -203,7 +204,7 @@ const amendPwd = (req, res) => {
             argon2i.hash(req.body.password, salt).then(hash => {
                 const sqlQuery = `UPDATE users SET user_password = ? where user_username = ?;`;
 
-                if(hash.match(/^[0-9a-zA-Z]+$/) && req.body.username.match(/^[0-9a-zA-Z]+$/)){
+                if(req.body.username.match(/^[0-9a-zA-Z]+$/)){
                     database.query(sqlQuery,[hash,req.body.username ], (err, result) => {
                         if (err) { res.sendStatus(400); }
                         else { res.json(result); }
@@ -217,7 +218,7 @@ const amendPwd = (req, res) => {
 
             });
         });
-    }
+    } 
 };
 
 const amendName = (req, res) => {
@@ -226,7 +227,7 @@ const amendName = (req, res) => {
     else {
         const sqlQuery = `UPDATE users SET user_firstname = ?, user_lastname = ? where \
             user_username = ?;`;
-        if(req.body.firstname.match(/^[0-9a-zA-Z]+$/) && req.body.lastname.match(/^[0-9a-zA-Z]+$/) && req.body.username.match(/^[0-9a-zA-Z]+$/)){
+        if(req.body.firstname.match(/^[0-9a-zA-Z\- ]+$/) && req.body.lastname.match(/^[0-9a-zA-Z\- ]+$/) && req.body.username.match(/^[0-9a-zA-Z]+$/)){
             database.query(sqlQuery,[req.body.firstname,req.body.lastname,req.body.username ], (err, result) => {
                 if (err) { res.sendStatus(400); }
                 else { res.json(result); }
@@ -246,7 +247,7 @@ const amendEmail = (req, res) => {
     else {
         const sqlQuery = `UPDATE users SET user_email = ? where user_username = ?;`;
 
-        if(req.body.email.match(/^[0-9a-zA-Z]+$/) && req.body.username.match(/^[0-9a-zA-Z]+$/)){
+        if(req.body.email.match(/^[a-zA-Z0-9._-]+@[a-z]+\.+[a-z]+$/) && req.body.username.match(/^[0-9a-zA-Z]+$/)){
             database.query(sqlQuery,[req.body.email,req.body.username ], (err, result) => {
                 if (err) { res.sendStatus(400); }
                 else { res.json(result); }
@@ -268,8 +269,8 @@ const amendAddress = (req, res) => {
             where user_username = ?;`;
 
         if(req.body.country.match(/^[0-9a-zA-Z]+$/) &&
-            req.body.city.match(/^[0-9a-zA-Z]+$/) &&
-            req.body.address.match(/^[0-9a-zA-Z]+$/) &&
+            req.body.city.match(/^[0-9a-zA-Z\- ]+$/) &&
+            req.body.address.match(/^[0-9a-zA-Z\- ]+$/) &&
             req.body.house_number.match(/^[0-9a-zA-Z]+$/) &&
             req.body.zipcode.match(/^[0-9a-zA-Z]+$/) &&
             req.body.username.match(/^[0-9a-zA-Z]+$/)){

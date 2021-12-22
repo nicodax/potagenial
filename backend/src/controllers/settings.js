@@ -56,10 +56,9 @@ const postSondeSettings = (req, res) => {
         if(req.body.settings_temperature_outside.match(/^[0-9a-zA-Z]+$/) &&
             req.body.settings_temperature_ground.match(/^[0-9a-zA-Z]+$/) && 
             req.body.settings_humidity.match(/^[0-9a-zA-Z]+$/) && 
-            req.body.settings_last_sprinkling.match(/^[0-9a-zA-Z]+$/) &&
+            req.body.settings_last_sprinkling.match(/^[0-9a-zA-Z\-]+$/) &&
             req.body.settings_last_sprinkling_quantity.match(/^[0-9a-zA-Z]+$/) && 
             req.params.sonde_id.match(/^[0-9a-zA-Z]+$/)){
-
                 database.query(sqlQuery,[req.body.settings_temperature_outside, 
                     req.body.settings_temperature_ground, 
                     req.body.settings_humidity, 
