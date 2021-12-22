@@ -54,9 +54,9 @@ const refreshAccessToken = (req, res) => {
     const errors = validationResult(req);
     if (errors.array().length > 0) { res.send(errors.array()); }
     else {
-        const sqlQuery = `SELECT token FROM tokens WHERE user_username = '${req.user.name}';`;
+        const sqlQuery = `SELECT token FROM tokens WHERE user_username = ?;`;
 
-        database.query(sqlQuery, (err, result) => {
+        database.query(sqlQuery,[req.user.name], (err, result) => {
             if (err) { res.sendStatus(500); }
             if (result.length == 0) { res.sendStatus(403); }
             else {
